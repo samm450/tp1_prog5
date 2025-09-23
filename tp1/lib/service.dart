@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/foundation.dart';
+import 'package:tp1/models/SessionManager.dart';
 import 'package:http/http.dart' as http;
 import 'package:tp1/models/utilisateur.dart';
 
@@ -25,12 +25,14 @@ class UserService {
   static Future<ReponseConnexion> inscription(String nom, String motDePasse, String confirmationMotDePasse) async {
     final response = await SingletonDio.getDio().post('$baseUrl/id/inscription', data: {'nom': nom, 'motDePasse': motDePasse, 'confirmationMotDePasse': confirmationMotDePasse});
 
+    SessionManager.nomUtilisateur = nom;
     return ReponseConnexion.fromJson(response.data);
   }
 
   static Future<ReponseConnexion> connexion(String nom, String motDePasse) async {
     final response = await SingletonDio.getDio().post('$baseUrl/id/connexion', data: {'nom': nom, 'motDePasse': motDePasse});
 
+    SessionManager.nomUtilisateur = nom;
     return ReponseConnexion.fromJson(response.data);
   }
 }

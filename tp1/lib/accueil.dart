@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tp1/models/tache.dart';
 import 'package:tp1/tacheCree.dart';
 import 'package:tp1/service.dart';
-
+import 'package:tp1/drawer.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({super.key});
@@ -35,6 +35,7 @@ class _AccueilState extends State<Accueil> {
       appBar: AppBar(
         title: const Text('Accueil'),
       ),
+      drawer: const MonDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
