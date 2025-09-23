@@ -18,6 +18,7 @@ class _AccueilState extends State<Accueil> {
   @override void initState() {
     // TODO: implement initState
     super.initState();
+    getTaches();
 
   }
 

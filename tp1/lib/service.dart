@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:tp1/models/utilisateur.dart';
 
@@ -14,6 +15,7 @@ class SingletonDio {
   static Dio getDio() {
     Dio dio = Dio();
     dio.interceptors.add(cookieManager);
+
     return dio;
   }
 }

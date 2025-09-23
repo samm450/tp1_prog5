@@ -85,8 +85,8 @@ class _InscriptionState extends State<Inscription> {
                   ),
                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {
-                  getUtilisateur();
+                onPressed: () async {
+                  await getUtilisateur();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
 
                 },

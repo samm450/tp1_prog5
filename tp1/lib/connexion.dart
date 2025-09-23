@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tp1/Inscription.dart';
 import 'accueil.dart';
+import 'models/utilisateur.dart';
+import 'package:tp1/service.dart';
 
 
 class Connexion extends StatefulWidget {
@@ -16,6 +18,14 @@ class Connexion extends StatefulWidget {
 
 class _ConnexionState extends State<Connexion> {
 
+  final TextEditingController nomControlleur = TextEditingController();
+  final TextEditingController passwordControlleur = TextEditingController();
+  ReponseConnexion response = ReponseConnexion();
+
+  getUtilisateur() async {
+    response = await UserService.connexion(nomControlleur.text, passwordControlleur.text);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,66 +38,69 @@ class _ConnexionState extends State<Connexion> {
         title: Text(widget.title),
       ),
       body: Center(
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: 300, // largeur souhaitée
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 300, // largeur souhaitée
+                child: TextField(
+                  controller: nomControlleur,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            SizedBox(
-              width: 300,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'password',
+              SizedBox(height: 16),
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  controller: passwordControlleur,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'password',
+                  ),
+                  obscureText: true,
                 ),
-                obscureText: true,
               ),
-            ),
-            SizedBox(height: 16),
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.red, // couleur de fond
-              foregroundColor: Colors.white, // couleur du texte
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
-            },
-            child: const Text('Connexion'),
-          ),
-            SizedBox(height: 16),
-
-
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red, // couleur de fond
-                foregroundColor: Colors.white, // couleur du texte
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+              SizedBox(height: 16),
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red, // couleur de fond
+                  foregroundColor: Colors.white, // couleur du texte
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                onPressed: () {
+                  getUtilisateur();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
+                },
+                child: const Text('Connexion'),
               ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: "Inscription")));
-              },
-              child: const Text('Inscription'),
-            )
-          ],
+              SizedBox(height: 16),
 
-      )
+
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red, // couleur de fond
+                  foregroundColor: Colors.white, // couleur du texte
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: "Inscription")));
+                },
+                child: const Text('Inscription'),
+              )
+            ],
+
+          )
 
 
       ),
