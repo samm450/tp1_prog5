@@ -3,6 +3,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:http/http.dart' as http;
+import 'package:tp1/models/utilisateur.dart';
 
 import 'models/tache.dart';
 
@@ -16,6 +17,22 @@ class SingletonDio {
     return dio;
   }
 }
+class UserService {
+  static const String baseUrl = 'http://10.0.2.2:8080';
+
+  static Future<ReponseConnexion> inscription(String nom, String motDePasse, String confirmationMotDePasse) async {
+    final response = await SingletonDio.getDio().post('$baseUrl/id/inscription', data: {'nom': nom, 'motDePasse': motDePasse, 'confirmationMotDePasse': confirmationMotDePasse});
+
+    return ReponseConnexion.fromJson(response.data);
+  }
+
+  static Future<ReponseConnexion> connexion(String nom, String motDePasse) async {
+    final response = await SingletonDio.getDio().post('$baseUrl/id/connexion', data: {'nom': nom, 'motDePasse': motDePasse});
+
+    return ReponseConnexion.fromJson(response.data);
+  }
+}
+
 
 class TacheService {
   static const String baseUrl = 'http://10.0.2.2:8080';

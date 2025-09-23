@@ -1,20 +1,30 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:tp1/models/utilisateur.dart';
+import 'package:tp1/service.dart';
 import 'accueil.dart';
 
 
 
 class Inscription extends StatefulWidget {
-  const Inscription({super.key, required this.title});
-
-
-
-  final String title;
+   Inscription({super.key, required this.title});
+   final String title;
 
   @override
   State<Inscription> createState() => _InscriptionState();
 }
 
 class _InscriptionState extends State<Inscription> {
+
+  final TextEditingController nomControlleur = TextEditingController();
+  final TextEditingController passwordControlleur = TextEditingController();
+  final TextEditingController confirmpasswordControlleur = TextEditingController();
+  ReponseConnexion response = ReponseConnexion();
+
+  getUtilisateur() async {
+    response = await UserService.inscription(nomControlleur.text, passwordControlleur.text, confirmpasswordControlleur.text);
+    setState(() {});
+  }
 
 
   @override
@@ -34,6 +44,7 @@ class _InscriptionState extends State<Inscription> {
               SizedBox(
                 width: 300, // largeur souhaitée
                 child: TextField(
+                  controller: nomControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Username',
@@ -44,6 +55,7 @@ class _InscriptionState extends State<Inscription> {
               SizedBox(
                 width: 300,
                 child: TextField(
+                  controller: passwordControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'password',
@@ -54,6 +66,7 @@ class _InscriptionState extends State<Inscription> {
               SizedBox(
                 width: 300,
                 child: TextField(
+                  controller: confirmpasswordControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'password confirm',
@@ -73,7 +86,9 @@ class _InscriptionState extends State<Inscription> {
                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
+                  getUtilisateur();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
+
                 },
                 child: const Text("S'inscrire"),
               )
