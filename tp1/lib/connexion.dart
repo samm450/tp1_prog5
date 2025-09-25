@@ -94,7 +94,7 @@ class _ConnexionState extends State<Connexion> {
                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onPressed : () async {
-                  await getUtilisateur();
+                  //await getUtilisateur();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: "Inscription")));
                 },
                 child: const Text('Inscription'),

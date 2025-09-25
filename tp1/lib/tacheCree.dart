@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'accueil.dart';
+import 'models/SessionManager.dart';
+import 'service.dart';
 
 class TacheCree extends StatefulWidget {
   const TacheCree({super.key});
@@ -26,12 +30,16 @@ class _TacheCreeState extends State<TacheCree> {
     }
   }
 
-  void _ajouterTache() {
-    // Ici tu peux ajouter la logique pour sauvegarder la tâche
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const Accueil()),
-    );
+  Future<void> _ajouterTache() async {
+    //icic on veux ajouter la tache cree a la liste de tache a l'utilisatuer utiliser en ce momemnt avec le service
+    final nomTache = nomController.text;
+    String nomUtilisateur = SessionManager.nomUtilisateur!;
+    final TacheService tache = TacheService();
+
+    if(!nomTache.isEmpty && dateEcheance != null){
+      await tache.AjoutTache(nomTache, dateEcheance.toIso8601String(), nomUtilisateur)
+      );
+    }
   }
 
   @override

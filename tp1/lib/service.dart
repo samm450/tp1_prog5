@@ -42,7 +42,9 @@ class TacheService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 
   static Future<List<Tache>> getTaches2() async {
-    final response = await SingletonDio.getDio().get('$baseUrl/tache/acceuil');
+    final nomUtilisateur = SessionManager.nomUtilisateur;
+    final response = await SingletonDio.getDio().get('$baseUrl/tache/acceuil',
+    queryParameters: {'nomUtilisateur': nomUtilisateur});
 
     List tachesjson = response.data;
 
@@ -53,17 +55,6 @@ class TacheService {
     return taches;
   }
 
-  // Récupérer les tâches
-  static Future<List<Map<String, dynamic>>> getTaches() async {
-    final response = await http.get(Uri.parse('$baseUrl/tache/acceuil'));
-
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.cast<Map<String, dynamic>>();
-    } else {
-      throw Exception('Erreur lors du chargement des tâches');
-    }
-  }
 
   // Créer une tâche
   static Future<bool> creerTache(String titre, String description) async {
@@ -77,5 +68,13 @@ class TacheService {
     );
 
     return response.statusCode == 201;
+  }
+
+  static Future<Tache> AjoutTache(String nom, DateTime dateEcheance) async {
+    final nomUtilisateur = SessionManager.nomUtilisateur;
+    final response = await SingletonDio.getDio().post('$baseUrl/tache/ajout',
+        data: {'nom': nom, 'dateEcheance': dateEcheance.toIso8601String(), 'nomUtilisateur': nomUtilisateur});
+
+    return Tache.fromJson(response.data);
   }
 }
