@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
 import 'package:tp1/models/utilisateur.dart';
 import 'package:tp1/service.dart';

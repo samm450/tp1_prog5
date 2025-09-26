@@ -76,6 +76,7 @@ class _ConnexionState extends State<Connexion> {
                 ),
                 onPressed: () {
                   getUtilisateur();
+                  errorText: nomControlleur.text.length < 4 ? "Nom d'utilisateur trop court" : null;
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
                 },
                 child: const Text('Connexion'),

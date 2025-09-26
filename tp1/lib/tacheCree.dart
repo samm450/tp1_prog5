@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'accueil.dart';
 import 'models/SessionManager.dart';
 import 'service.dart';
+import 'accueil.dart';
 
 class TacheCree extends StatefulWidget {
   const TacheCree({super.key});
@@ -31,14 +29,11 @@ class _TacheCreeState extends State<TacheCree> {
   }
 
   Future<void> _ajouterTache() async {
-    //icic on veux ajouter la tache cree a la liste de tache a l'utilisatuer utiliser en ce momemnt avec le service
     final nomTache = nomController.text;
     String nomUtilisateur = SessionManager.nomUtilisateur!;
-    final TacheService tache = TacheService();
 
     if(!nomTache.isEmpty && dateEcheance != null){
-      await tache.AjoutTache(nomTache, dateEcheance.toIso8601String(), nomUtilisateur)
-      );
+      await TacheService.AjoutTache(nomTache, dateEcheance!);
     }
   }
 
@@ -76,7 +71,10 @@ class _TacheCreeState extends State<TacheCree> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: _ajouterTache,
+              onPressed: () async {
+                await _ajouterTache();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()),);
+              },
               child: const Text('Ajouter'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),

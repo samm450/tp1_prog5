@@ -1,9 +1,9 @@
-import 'dart:convert';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:tp1/models/SessionManager.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:tp1/models/utilisateur.dart';
 
 import 'models/tache.dart';
@@ -43,8 +43,8 @@ class TacheService {
 
   static Future<List<Tache>> getTaches2() async {
     final nomUtilisateur = SessionManager.nomUtilisateur;
-    final response = await SingletonDio.getDio().get('$baseUrl/tache/acceuil',
-    queryParameters: {'nomUtilisateur': nomUtilisateur});
+    final response = await SingletonDio.getDio().get('$baseUrl/tache/accueil');
+    //queryParameters: {'nomUtilisateur': nomUtilisateur});
 
     List tachesjson = response.data;
 
@@ -55,26 +55,19 @@ class TacheService {
     return taches;
   }
 
-
-  // Créer une tâche
-  static Future<bool> creerTache(String titre, String description) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/taches'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'titre': titre,
-        'description': description,
-      }),
-    );
-
-    return response.statusCode == 201;
+  static Future<Tache> TacheDetail(int id) async{
+    final response = await SingletonDio.getDio().get('$baseUrl/tache/detail/$id');
+    return Tache.fromJson(response.data);
   }
 
-  static Future<Tache> AjoutTache(String nom, DateTime dateEcheance) async {
+  static Future<void> AjoutTache(String nom, DateTime dateEcheance) async {
     final nomUtilisateur = SessionManager.nomUtilisateur;
     final response = await SingletonDio.getDio().post('$baseUrl/tache/ajout',
         data: {'nom': nom, 'dateEcheance': dateEcheance.toIso8601String(), 'nomUtilisateur': nomUtilisateur});
 
-    return Tache.fromJson(response.data);
+    //return Tache.fromJson(response.data);
   }
+
+
+
 }
