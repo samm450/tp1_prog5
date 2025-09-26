@@ -20,7 +20,8 @@ class _AccueilState extends State<Accueil> {
     // TODO: implement initState
     super.initState();
     getTaches();
-
+    setState(() {
+    });
   }
 
   getTaches() async {

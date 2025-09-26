@@ -25,6 +25,8 @@ class _consultationState extends State<consultation> {
 
     int id = widget.id;
     tache = await TacheService.TacheDetail(id);
+    setState(() {
+    });
   }
 
   @override
