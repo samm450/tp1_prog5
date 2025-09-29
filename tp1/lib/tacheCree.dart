@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/SessionManager.dart';
 import 'service.dart';
 import 'accueil.dart';
+import 'package:untitled1/drawer.dart';
 
 class TacheCree extends StatefulWidget {
   const TacheCree({super.key});
@@ -41,6 +42,7 @@ class _TacheCreeState extends State<TacheCree> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Créer une tâche')),
+      drawer: const MonDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

@@ -1,10 +1,12 @@
 
+import 'dart:ffi';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:tp1/models/SessionManager.dart';
+import 'package:untitled1/models/SessionManager.dart';
 
-import 'package:tp1/models/utilisateur.dart';
+import 'package:untitled1/models/utilisateur.dart';
 
 import 'models/tache.dart';
 
@@ -35,6 +37,12 @@ class UserService {
     SessionManager.nomUtilisateur = nom;
     return ReponseConnexion.fromJson(response.data);
   }
+
+  static Future<void> deconnexion() async {
+    await SingletonDio.getDio().post('$baseUrl/id/deconnexion');
+    SessionManager.nomUtilisateur = null;
+    SingletonDio.cookieManager.cookieJar.deleteAll();
+  }
 }
 
 
@@ -55,6 +63,11 @@ class TacheService {
     return taches;
   }
 
+  static Future<void> UpdateProgress(int tacheId, int valeur) async {
+
+    final response = await SingletonDio.getDio().get('$baseUrl/tache/progres/$tacheId/$valeur');
+  }
+
   static Future<Tache> TacheDetail(int id) async{
     final response = await SingletonDio.getDio().get('$baseUrl/tache/detail/$id');
     return Tache.fromJson(response.data);
@@ -67,6 +80,8 @@ class TacheService {
 
     //return Tache.fromJson(response.data);
   }
+
+
 
 
 

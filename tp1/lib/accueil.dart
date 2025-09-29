@@ -65,11 +65,11 @@ class _AccueilState extends State<Accueil> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('pourcentage de temps écoulé : ${tache.pourcentageTemps}'),
+                Text('pourcentage de temps écoulé : ${tache.pourcentageTemps} %'),
                 SizedBox(height: 7),
                 Text('pourcentage de la tache'),
                 LinearProgressIndicator(
-                  value: (tache.pourcentageAvancement) / 100,
+                  value: (tache.pourcentageTemps) / 100,
                   minHeight: 6,
                   backgroundColor: Colors.grey[300],
                   color: Colors.blue,

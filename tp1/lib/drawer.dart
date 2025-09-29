@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'accueil.dart';
 import 'tacheCree.dart';
 import 'connexion.dart';
 import 'models/SessionManager.dart';
+import 'package:untitled1/service.dart';
 
 class MonDrawer extends StatelessWidget {
   const MonDrawer({super.key});
@@ -31,7 +34,7 @@ class MonDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Déconnexion'),
             onTap: () {
-              SessionManager.nomUtilisateur = null;
+              UserService.deconnexion();
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Connexion(title: 'Connexion')));
             },
           ),
