@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/SessionManager.dart';
 import 'service.dart';
 import 'accueil.dart';
-import 'package:tp1/drawer.dart';
+import 'drawer.dart';
 
 class TacheCree extends StatefulWidget {
   const TacheCree({super.key});

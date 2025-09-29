@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tp1/connexion.dart';
+import 'connexion.dart';
 
 void main() {
   runApp(const MyApp());

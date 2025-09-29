@@ -4,9 +4,9 @@ import 'dart:ffi';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:tp1/models/SessionManager.dart';
+import 'models/SessionManager.dart';
 
-import 'package:tp1/models/utilisateur.dart';
+import 'models/utilisateur.dart';
 
 import 'models/tache.dart';
 
@@ -41,7 +41,6 @@ class UserService {
   static Future<void> deconnexion() async {
     await SingletonDio.getDio().post('$baseUrl/id/deconnexion');
     SessionManager.nomUtilisateur = null;
-    SingletonDio.cookieManager.cookieJar.deleteAll();
   }
 }
 
@@ -50,10 +49,8 @@ class TacheService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 
   static Future<List<Tache>> getTaches2() async {
-    final nomUtilisateur = SessionManager.nomUtilisateur;
-    final response = await SingletonDio.getDio().get('$baseUrl/tache/accueil');
-    //queryParameters: {'nomUtilisateur': nomUtilisateur});
 
+    final response = await SingletonDio.getDio().get('$baseUrl/tache/accueil');
     List tachesjson = response.data;
 
     List<Tache> taches = tachesjson
@@ -65,7 +62,7 @@ class TacheService {
 
   static Future<void> UpdateProgress(int tacheId, int valeur) async {
 
-    final response = await SingletonDio.getDio().get('$baseUrl/tache/progres/$tacheId/$valeur');
+    await SingletonDio.getDio().get('$baseUrl/tache/progres/$tacheId/$valeur');
   }
 
   static Future<Tache> TacheDetail(int id) async{
@@ -75,7 +72,7 @@ class TacheService {
 
   static Future<void> AjoutTache(String nom, DateTime dateEcheance) async {
     final nomUtilisateur = SessionManager.nomUtilisateur;
-    final response = await SingletonDio.getDio().post('$baseUrl/tache/ajout',
+    await SingletonDio.getDio().post('$baseUrl/tache/ajout',
         data: {'nom': nom, 'dateEcheance': dateEcheance.toIso8601String(), 'nomUtilisateur': nomUtilisateur});
 
     //return Tache.fromJson(response.data);

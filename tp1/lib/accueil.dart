@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tp1/consultation.dart';
-import 'package:tp1/models/tache.dart';
-import 'package:tp1/tacheCree.dart';
-import 'package:tp1/service.dart';
-import 'package:tp1/drawer.dart';
+import 'consultation.dart';
+import 'models/tache.dart';
+import 'tacheCree.dart';
+import 'service.dart';
+import 'drawer.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({super.key});
@@ -13,15 +13,14 @@ class Accueil extends StatefulWidget {
 }
 
 class _AccueilState extends State<Accueil> {
-
   List<Tache> taches = [];
 
-  @override void initState() {
+  @override
+  void initState() {
     // TODO: implement initState
     super.initState();
     getTaches();
-    setState(() {
-    });
+    setState(() {});
   }
 
   getTaches() async {
@@ -29,14 +28,10 @@ class _AccueilState extends State<Accueil> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Accueil'),
-      ),
+      appBar: AppBar(title: const Text('Accueil')),
       drawer: const MonDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -58,14 +53,18 @@ class _AccueilState extends State<Accueil> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => consultation(id: tache.id)),
+                MaterialPageRoute(
+                  builder: (context) => consultation(id: tache.id),
+                ),
               );
             },
             title: Text(tache.nom),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('pourcentage de temps écoulé : ${tache.pourcentageTemps} %'),
+                Text(
+                  'pourcentage de temps écoulé : ${tache.pourcentageTemps} %',
+                ),
                 SizedBox(height: 7),
                 Text('pourcentage de la tache'),
                 LinearProgressIndicator(

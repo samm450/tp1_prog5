@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:tp1/models/utilisateur.dart';
-import 'package:tp1/service.dart';
+import 'models/utilisateur.dart';
+import 'service.dart';
 import 'accueil.dart';
 
 

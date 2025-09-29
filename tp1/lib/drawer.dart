@@ -5,7 +5,7 @@ import 'accueil.dart';
 import 'tacheCree.dart';
 import 'connexion.dart';
 import 'models/SessionManager.dart';
-import 'package:tp1/service.dart';
+import 'service.dart';
 
 class MonDrawer extends StatelessWidget {
   const MonDrawer({super.key});

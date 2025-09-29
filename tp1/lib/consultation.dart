@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tp1/models/tache.dart';
-import 'package:tp1/service.dart';
+import 'models/tache.dart';
+import 'service.dart';
+import 'drawer.dart';
+import 'accueil.dart';
 
 class consultation extends StatefulWidget {
   final int id;
@@ -24,6 +26,7 @@ class _consultationState extends State<consultation> {
   getDetails() async {
     int id = widget.id;
     tache = await TacheService.TacheDetail(id);
+    avancement = tache.pourcentageAvancement.toDouble();
     setState(() {});
   }
 
