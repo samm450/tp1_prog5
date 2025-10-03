@@ -45,7 +45,7 @@ class _AccueilState extends State<Accueil> {
 
       //cree une list qui prend tout l'ecran qui affiche des taches
       body: ListView.builder(
-        itemExtent: 130,
+        itemExtent: 150,
         itemCount: taches.length,
         itemBuilder: (context, index) {
           final tache = taches[index];
@@ -58,29 +58,59 @@ class _AccueilState extends State<Accueil> {
                 ),
               );
             },
-            title: Text(tache.nom),
+            title: Text(tache.nom,
+                        style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            )),
+
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'pourcentage de temps écoulé : ${tache.pourcentageTemps} %',
-                ),
-                SizedBox(height: 7),
-                Text('pourcentage de la tache'),
-                LinearProgressIndicator(
-                  value: (tache.pourcentageTemps) / 100,
-                  minHeight: 6,
-                  backgroundColor: Colors.grey[300],
-                  color: Colors.blue,
-                ),
-                SizedBox(height: 5),
-                Text("pourcentage d'avancement"),
-                LinearProgressIndicator(
-                  value: (tache.pourcentageAvancement) / 100,
-                  minHeight: 6,
-                  backgroundColor: Colors.grey[300],
-                  color: Colors.green,
-                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Partie gauche : texte et barres de progression
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 7),
+
+                          Text(
+                            'pourcentage de temps écoulé : ${tache.pourcentageTemps} %',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 8),
+                          Text('pourcentage de la tache'),
+                          LinearProgressIndicator(
+                            value: (tache.pourcentageTemps) / 100,
+                            minHeight: 6,
+                            backgroundColor: Colors.grey[300],
+                            color: Colors.blue,
+                          ),
+                          SizedBox(height: 10),
+                          Text("pourcentage d'avancement"),
+                          LinearProgressIndicator(
+                            value: (tache.pourcentageAvancement) / 100,
+                            minHeight: 6,
+                            backgroundColor: Colors.grey[300],
+                            color: Colors.green,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Partie droite : image
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Image(
+                        image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           );

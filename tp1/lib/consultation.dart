@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'models/tache.dart';
 import 'service.dart';
 import 'drawer.dart';
 import 'accueil.dart';
+import 'package:image_picker/image_picker.dart';
 
 class consultation extends StatefulWidget {
   final int id;
@@ -14,6 +16,7 @@ class consultation extends StatefulWidget {
 
 class _consultationState extends State<consultation> {
 
+  File? _image;
   Tache tache = Tache();
   double avancement = 0;
 
@@ -22,7 +25,17 @@ class _consultationState extends State<consultation> {
     super.initState();
     getDetails();
   }
-
+  
+   void pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+  
   getDetails() async {
     int id = widget.id;
     tache = await TacheService.TacheDetail(id);
@@ -66,6 +79,9 @@ class _consultationState extends State<consultation> {
               Text('Pourcentage de temps écoulé : ${tache.pourcentageTemps ??
                   0}%'),
               SizedBox(height: 16),
+              
+              Image(image: FileImage(_image!), height: 300, width: 300),
+
               ElevatedButton(
                 onPressed: () async {
                   await TacheService.UpdateProgress(tache.id, avancement.toInt());
