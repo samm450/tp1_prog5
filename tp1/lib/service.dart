@@ -1,5 +1,4 @@
-
-import 'dart:ffi';
+import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -76,6 +75,11 @@ class TacheService {
         data: {'nom': nom, 'dateEcheance': dateEcheance.toIso8601String(), 'nomUtilisateur': nomUtilisateur});
 
     //return Tache.fromJson(response.data);
+  }
+
+  static Future<void> AjouterImageBD(File imagePath, int tacheId) async {
+    await SingletonDio.getDio().post('$baseUrl/fichier',
+        data: {'imagePath': imagePath, 'tacheId': tacheId});
   }
 
 

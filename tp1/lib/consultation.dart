@@ -35,6 +35,13 @@ class _consultationState extends State<consultation> {
       });
     }
   }
+
+  UploadImage() async {
+    int id = widget.id;
+    if(_image != null) {
+      await TacheService.AjouterImageBD(_image!, id);
+    }
+  }
   
   getDetails() async {
     int id = widget.id;
@@ -79,12 +86,23 @@ class _consultationState extends State<consultation> {
               Text('Pourcentage de temps écoulé : ${tache.pourcentageTemps ??
                   0}%'),
               SizedBox(height: 16),
-              
-              Image(image: FileImage(_image!), height: 300, width: 300),
+
+              ElevatedButton(
+                onPressed: pickImage,
+                child: Text('Choisir une image'),
+              ),
+
+              SizedBox(
+                height: 200,
+                width: double.infinity,
+                child: Image.file(_image!)
+              ),
+              SizedBox(height: 16),
 
               ElevatedButton(
                 onPressed: () async {
                   await TacheService.UpdateProgress(tache.id, avancement.toInt());
+                  await UploadImage();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Modifications enregistrées')),
                   );
