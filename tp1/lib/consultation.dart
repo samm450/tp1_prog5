@@ -95,7 +95,7 @@ class _consultationState extends State<consultation> {
               SizedBox(
                 height: 200,
                 width: double.infinity,
-                child: Image.file(_image!)
+                child: _image != null ? Image.file(_image!) : Center(child : Text('Aucune image sélectionnée'))
               ),
               SizedBox(height: 16),
 

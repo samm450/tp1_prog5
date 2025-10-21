@@ -78,8 +78,14 @@ class TacheService {
   }
 
   static Future<void> AjouterImageBD(File imagePath, int tacheId) async {
-    await SingletonDio.getDio().post('$baseUrl/fichier',
-        data: {'imagePath': imagePath, 'tacheId': tacheId});
+    FormData formData = FormData.fromMap({
+      // TODO on peut ajouter d'autres champs que le fichier d'ou le nom multipart
+      "tacheId": tacheId,
+      // TODO on peut mettre le nom du fichier d'origine si necessaire
+      "file": await MultipartFile.fromFile(imagePath.path, filename: "image.jpg")
+    });
+
+    await SingletonDio.getDio().post('$baseUrl/fichier', data: formData);
   }
 
 
