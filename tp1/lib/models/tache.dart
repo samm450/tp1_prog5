@@ -13,6 +13,7 @@ class Tache {
   String nom = "";
   int pourcentageTemps = 0;
   int pourcentageAvancement = 0;
+  int idPhoto = 0;
 
   factory Tache.fromJson(Map<String, dynamic> json) => _$TacheFromJson(json);
 

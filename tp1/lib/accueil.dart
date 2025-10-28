@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'consultation.dart';
 import 'models/tache.dart';
 import 'tacheCree.dart';
 import 'service.dart';
 import 'drawer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({super.key});
@@ -14,6 +17,7 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
   List<Tache> taches = [];
+  File image = File('');
 
   @override
   void initState() {
@@ -27,6 +31,7 @@ class _AccueilState extends State<Accueil> {
     taches = await TacheService.getTaches2();
     setState(() {});
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +108,10 @@ class _AccueilState extends State<Accueil> {
                     // Partie droite : image
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
-                      child: Image(
-                        image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                      child: CachedNetworkImage(
+                        imageUrl: '${TacheService.baseUrl}/fichier/${tache.idPhoto}?largeur=80',
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                         width: 80,
                         height: 80,
                       ),

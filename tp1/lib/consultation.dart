@@ -5,6 +5,7 @@ import 'service.dart';
 import 'drawer.dart';
 import 'accueil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class consultation extends StatefulWidget {
   final int id;
@@ -93,9 +94,13 @@ class _consultationState extends State<consultation> {
               ),
 
               SizedBox(
-                height: 200,
+                height: 250,
                 width: double.infinity,
-                child: _image != null ? Image.file(_image!) : Center(child : Text('Aucune image sélectionnée'))
+                child: CachedNetworkImage(
+                  imageUrl: '${TacheService.baseUrl}/fichier/${tache.idPhoto}',
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
               SizedBox(height: 16),
 

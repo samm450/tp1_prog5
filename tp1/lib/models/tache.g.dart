@@ -11,7 +11,8 @@ Tache _$TacheFromJson(Map<String, dynamic> json) => Tache()
   ..dateLimite = DateTime.parse(json['dateLimite'] as String)
   ..nom = json['nom'] as String
   ..pourcentageTemps = (json['pourcentageTemps'] as num).toInt()
-  ..pourcentageAvancement = (json['pourcentageAvancement'] as num).toInt();
+  ..pourcentageAvancement = (json['pourcentageAvancement'] as num).toInt()
+  ..idPhoto = ((json['idPhoto']??json['photoId']??0) as num).toInt();
 
 Map<String, dynamic> _$TacheToJson(Tache instance) => <String, dynamic>{
   'id': instance.id,
@@ -19,4 +20,5 @@ Map<String, dynamic> _$TacheToJson(Tache instance) => <String, dynamic>{
   'nom': instance.nom,
   'pourcentageTemps': instance.pourcentageTemps,
   'pourcentageAvancement': instance.pourcentageAvancement,
+  'idPhoto': instance.idPhoto,
 };

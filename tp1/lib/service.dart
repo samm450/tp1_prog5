@@ -48,8 +48,7 @@ class TacheService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 
   static Future<List<Tache>> getTaches2() async {
-
-    final response = await SingletonDio.getDio().get('$baseUrl/tache/accueil');
+    final response = await SingletonDio.getDio().get('$baseUrl/api/accueil/photo');
     List tachesjson = response.data;
 
     List<Tache> taches = tachesjson
@@ -60,36 +59,59 @@ class TacheService {
   }
 
   static Future<void> UpdateProgress(int tacheId, int valeur) async {
-
     await SingletonDio.getDio().get('$baseUrl/tache/progres/$tacheId/$valeur');
   }
 
-  static Future<Tache> TacheDetail(int id) async{
-    final response = await SingletonDio.getDio().get('$baseUrl/tache/detail/$id');
+  static Future<Tache> TacheDetail(int id) async {
+    final response = await SingletonDio.getDio().get(
+        '$baseUrl/api/detail/photo/$id');
     return Tache.fromJson(response.data);
   }
 
   static Future<void> AjoutTache(String nom, DateTime dateEcheance) async {
     final nomUtilisateur = SessionManager.nomUtilisateur;
     await SingletonDio.getDio().post('$baseUrl/tache/ajout',
-        data: {'nom': nom, 'dateEcheance': dateEcheance.toIso8601String(), 'nomUtilisateur': nomUtilisateur});
+        data: {
+          'nom': nom,
+          'dateEcheance': dateEcheance.toIso8601String(),
+          'nomUtilisateur': nomUtilisateur
+        });
 
     //return Tache.fromJson(response.data);
   }
 
   static Future<void> AjouterImageBD(File imagePath, int tacheId) async {
+    String Nom = 'image';
+    int compteur = 0;
+    String NomImage = Nom + compteur.toString();
     FormData formData = FormData.fromMap({
       // TODO on peut ajouter d'autres champs que le fichier d'ou le nom multipart
-      "tacheId": tacheId,
+      "taskID": tacheId.toString(),
       // TODO on peut mettre le nom du fichier d'origine si necessaire
-      "file": await MultipartFile.fromFile(imagePath.path, filename: "image.jpg")
+      "file": await MultipartFile.fromFile(
+          imagePath.path, filename: "$NomImage.jpg")
     });
 
     await SingletonDio.getDio().post('$baseUrl/fichier', data: formData);
+    compteur++;
   }
 
-
-
-
-
 }
+  class PhotoService {
+  static const String baseUrl = 'http://10.0.2.2:8080';
+
+  static Future<void> AjouterImageBD(File imagePath, int tacheId) async {
+    String Nom = 'image';
+    int compteur = 0;
+    String NomImage = Nom + compteur.toString();
+    FormData formData = FormData.fromMap({
+      "taskID": tacheId.toString(),
+      "file": await MultipartFile.fromFile(imagePath.path, filename: "$NomImage.jpg")
+    });
+
+    await SingletonDio.getDio().post('$baseUrl/fichier', data: formData);
+    compteur++;
+  }
+}
+
+
