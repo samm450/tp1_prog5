@@ -1,4 +1,5 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'models/utilisateur.dart';
 import 'service.dart';
@@ -22,8 +23,24 @@ class _InscriptionState extends State<Inscription> {
   ReponseConnexion response = ReponseConnexion();
 
   getUtilisateur() async {
-    response = await UserService.inscription(nomControlleur.text, passwordControlleur.text, confirmpasswordControlleur.text);
-    setState(() {});
+    try {
+      response = await UserService.inscription(
+          nomControlleur.text, passwordControlleur.text,
+          confirmpasswordControlleur.text);
+      setState(() {});
+    } on DioException catch (e) {
+      String erreur = e.response!.data;
+      if (erreur == "NomTropCourt")
+        print("Le nom d'utilisateur est trop court.");
+      else if (erreur == "MotDePasseTropCourt")
+        print("Le mot de passe est trop court.");
+      else if (erreur == "MotDePasseNonConfirme")
+        print("La confirmation du mot de passe ne correspond pas.");
+      else if (erreur == "NomDejaUtilise")
+        print("Le nom d'utilisateur est déjà utilisé.");
+      else
+      print("Erreur lors de l'inscription : $e");
+    }
   }
 
 
