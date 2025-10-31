@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'accueil.dart';
+import 'generated/l10n.dart';
 import 'tacheCree.dart';
 import 'connexion.dart';
 import 'models/SessionManager.dart';
@@ -40,14 +41,14 @@ class MonDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: const Text('Accueil'),
+            title: Text(S.of(context).acceuil),
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Accueil()));
             },
           ),
           ListTile(
             leading: const Icon(Icons.add_task),
-            title: const Text('Ajout de tâche'),
+            title: Text(S.of(context).ajoutTache),
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const TacheCree()));
             },
@@ -55,10 +56,10 @@ class MonDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Déconnexion'),
+            title: Text(S.of(context).deconnexion),
             onTap: () {
               UserService.deconnexion();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Connexion(title: 'Connexion')));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Connexion(title: S.of(context).connexion)));
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Inscription.dart';
 import 'accueil.dart';
+import 'generated/l10n.dart';
 import 'models/utilisateur.dart';
 import 'service.dart';
 
@@ -48,7 +49,7 @@ class _ConnexionState extends State<Connexion> {
                   controller: nomControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Username',
+                    labelText: S.of(context).username,
                   ),
                 ),
               ),
@@ -59,7 +60,7 @@ class _ConnexionState extends State<Connexion> {
                   controller: passwordControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'password',
+                    labelText: S.of(context).password,
                   ),
                   obscureText: true,
                 ),
@@ -79,7 +80,7 @@ class _ConnexionState extends State<Connexion> {
                   await getUtilisateur();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
                 },
-                child: const Text('Connexion'),
+                child: Text(S.of(context).connexion),
               ),
               SizedBox(height: 16),
 
@@ -96,9 +97,9 @@ class _ConnexionState extends State<Connexion> {
                 ),
                 onPressed : () async {
                   //await getUtilisateur();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: "Inscription")));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: S.of(context).inscription)));
                 },
-                child: const Text('Inscription'),
+                child: Text(S.of(context).inscription),
               )
             ],
 

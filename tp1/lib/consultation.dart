@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'generated/l10n.dart';
 import 'models/tache.dart';
 import 'service.dart';
 import 'drawer.dart';
@@ -54,7 +55,7 @@ class _consultationState extends State<consultation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Consultation')),
+        appBar: AppBar(title: Text(S.of(context).consultation)),
         drawer: const MonDrawer(),
         // lib/consultation.dart
         body: Padding(
@@ -62,13 +63,13 @@ class _consultationState extends State<consultation> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Nom : ${tache.nom}',
+              Text('${S.of(context).name} ${tache.nom}',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               SizedBox(height: 16),
               Text(
-                  'Date d\'échéance : ${tache.dateLimite ?? "Non renseignée"}'),
+                  ' ${S.of(context).dateDechange} ${tache.dateLimite ?? "Non renseignée"}'),
               SizedBox(height: 16),
-              Text('Pourcentage d\'avancement : ${avancement.toStringAsFixed(
+              Text('${S.of(context).pourcentageAvancement} ${avancement.toStringAsFixed(
                   0)}%'),
               Slider(
                 value: avancement,
@@ -84,13 +85,13 @@ class _consultationState extends State<consultation> {
                 },
               ),
               SizedBox(height: 16),
-              Text('Pourcentage de temps écoulé : ${tache.pourcentageTemps ??
+              Text('${S.of(context).pourcentageTempsEcoule} ${tache.pourcentageTemps ??
                   0}%'),
               SizedBox(height: 16),
 
               ElevatedButton(
                 onPressed: pickImage,
-                child: Text('Choisir une image'),
+                child: Text(S.of(context).pickImage),
               ),
 
               SizedBox(
@@ -109,12 +110,12 @@ class _consultationState extends State<consultation> {
                   await TacheService.UpdateProgress(tache.id, avancement.toInt());
                   await UploadImage();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Modifications enregistrées')),
+                    SnackBar(content: Text(S.of(context).modification)),
                   );
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Accueil()));
                 },
-                child: Text('Enregistrer'),
+                child: Text(S.of(context).enregistrer),
               ),
             ],
           ),

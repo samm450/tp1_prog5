@@ -1,0 +1,40 @@
+{
+  "apptitle": "My Application",
+  "acceuil" : "Home",
+  "tempsEcouler" : "percentage of used time",
+  "pourcentage" : "percentage of the task",
+  "pourcetangeAvancement" : "percentage of advancement",
+
+  "username" : "username",
+  "password" : "password",
+  "passwordConfirmation" : "password confirm",
+  "connexion" : "connexion",
+  "inscription" : "sign up",
+
+  "consultation" : "consultation",
+  "dateDechange" : "limited date :",
+  "name" : "name :",
+  "pourcentageAvancement" : "percentage of advancement :",
+  "pourcentageTempsEcoule" : "percentage of used time :",
+  "pickImage" : "pick an image",
+  "modification" : "modifications has been saved",
+  "enregistrer" : "save",
+
+  "ajoutTache" : "add a task",
+  "deconnexion" : "log out",
+
+  "creeTache" : "Create a task",
+  "nomTache" : "Name of the task",
+  "noDate" : "You need to select a date",
+  "echeance" : "Due date",
+  "selectDate" : "Select a date",
+  "add" : "add",
+
+
+  "NameTooShort": "The username is too short",
+  "PasswordTooShort": "The password is too short",
+  "PasswordMismatch": "The passwords do not match",
+  "InvalidCredentials": "Invalid username or password",
+  "UsernameTaken": "The username is already taken"
+
+}

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'consultation.dart';
+import 'generated/l10n.dart';
 import 'models/tache.dart';
 import 'tacheCree.dart';
 import 'service.dart';
@@ -21,7 +22,6 @@ class _AccueilState extends State<Accueil> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getTaches();
     setState(() {});
@@ -36,7 +36,7 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Accueil')),
+      appBar: AppBar(title: Text(S.of(context).acceuil)),
       drawer: const MonDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -83,11 +83,11 @@ class _AccueilState extends State<Accueil> {
                           SizedBox(height: 7),
 
                           Text(
-                            'pourcentage de temps écoulé : ${tache.pourcentageTemps} %',
+                            '${S.of(context).tempsEcouler} ${tache.pourcentageTemps}%',
                             overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: 8),
-                          Text('pourcentage de la tache'),
+                          Text(S.of(context).pourcentage),
                           LinearProgressIndicator(
                             value: (tache.pourcentageTemps) / 100,
                             minHeight: 6,
@@ -95,7 +95,7 @@ class _AccueilState extends State<Accueil> {
                             color: Colors.blue,
                           ),
                           SizedBox(height: 10),
-                          Text("pourcentage d'avancement"),
+                          Text(S.of(context).pourcentageAvancement),
                           LinearProgressIndicator(
                             value: (tache.pourcentageAvancement) / 100,
                             minHeight: 6,

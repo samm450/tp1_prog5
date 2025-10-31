@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'generated/l10n.dart';
 import 'models/SessionManager.dart';
 import 'service.dart';
 import 'accueil.dart';
@@ -41,7 +42,7 @@ class _TacheCreeState extends State<TacheCree> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Créer une tâche')),
+      appBar: AppBar(title: Text(S.of(context).creeTache)),
       drawer: const MonDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -50,8 +51,8 @@ class _TacheCreeState extends State<TacheCree> {
           children: [
             TextField(
               controller: nomController,
-              decoration: const InputDecoration(
-                labelText: 'Nom de la tâche',
+              decoration: InputDecoration(
+                labelText: S.of(context).nomTache,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -61,13 +62,13 @@ class _TacheCreeState extends State<TacheCree> {
                 Expanded(
                   child: Text(
                     dateEcheance == null
-                        ? 'Aucune date sélectionnée'
-                        : 'Échéance: ${dateEcheance!.day}/${dateEcheance!.month}/${dateEcheance!.year}',
+                        ? S.of(context).noDate
+                        : '${S.of(context).echeance}: ${dateEcheance!.day}/${dateEcheance!.month}/${dateEcheance!.year}',
                   ),
                 ),
                 TextButton(
                   onPressed: () => _selectDate(context),
-                  child: const Text('Choisir la date'),
+                  child: Text(S.of(context).selectDate),
                 ),
               ],
             ),
@@ -77,7 +78,7 @@ class _TacheCreeState extends State<TacheCree> {
                 await _ajouterTache();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()),);
               },
-              child: const Text('Ajouter'),
+              child: Text(S.of(context).add),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 48),
                 backgroundColor: Colors.red,

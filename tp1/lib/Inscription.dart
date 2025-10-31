@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'generated/l10n.dart';
 import 'models/utilisateur.dart';
 import 'service.dart';
 import 'accueil.dart';
@@ -31,15 +32,15 @@ class _InscriptionState extends State<Inscription> {
     } on DioException catch (e) {
       String erreur = e.response!.data;
       if (erreur == "NomTropCourt")
-        print("Le nom d'utilisateur est trop court.");
+        print( S.of(context).NameTooShort);
       else if (erreur == "MotDePasseTropCourt")
-        print("Le mot de passe est trop court.");
+        print( S.of(context).PasswordTooShort);
       else if (erreur == "MotDePasseNonConfirme")
-        print("La confirmation du mot de passe ne correspond pas.");
+        print( S.of(context).PasswordMismatch);
       else if (erreur == "NomDejaUtilise")
-        print("Le nom d'utilisateur est déjà utilisé.");
+        print(S.of(context).UsernameTaken);
       else
-      print("Erreur lors de l'inscription : $e");
+      print( S.of(context).InvalidCredentials);
     }
   }
 
@@ -64,7 +65,7 @@ class _InscriptionState extends State<Inscription> {
                   controller: nomControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Username',
+                    labelText: S.of(context).username,
                   ),
                 ),
               ),
@@ -75,7 +76,7 @@ class _InscriptionState extends State<Inscription> {
                   controller: passwordControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'password',
+                    labelText: S.of(context).password,
                   ),
                   obscureText: true,
                 ),
@@ -86,7 +87,7 @@ class _InscriptionState extends State<Inscription> {
                   controller: confirmpasswordControlleur,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'password confirm',
+                    labelText: S.of(context).passwordConfirmation,
                   ),
                   obscureText: true,
                 ),
@@ -107,7 +108,7 @@ class _InscriptionState extends State<Inscription> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
 
                 },
-                child: const Text("S'inscrire"),
+                child: Text( S.of(context).inscription),
               )
             ],
 
