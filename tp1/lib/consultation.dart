@@ -58,68 +58,70 @@ class _consultationState extends State<consultation> {
         appBar: AppBar(title: Text(S.of(context).consultation)),
         drawer: const MonDrawer(),
         // lib/consultation.dart
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('${S.of(context).name} ${tache.nom}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 16),
-              Text(
-                  ' ${S.of(context).dateDechange} ${tache.dateLimite ?? "Non renseignée"}'),
-              SizedBox(height: 16),
-              Text('${S.of(context).pourcentageAvancement} ${avancement.toStringAsFixed(
-                  0)}%'),
-              Slider(
-                value: avancement,
-                min: 0,
-                max: 100,
-                divisions: 100,
-                label: '${avancement.toStringAsFixed(0)}%',
-                onChanged: (value) {
-                  setState(() {
-                    avancement = value;
-                    tache.pourcentageAvancement = value.toInt();
-                  });
-                },
-              ),
-              SizedBox(height: 16),
-              Text('${S.of(context).pourcentageTempsEcoule} ${tache.pourcentageTemps ??
-                  0}%'),
-              SizedBox(height: 16),
-
-              ElevatedButton(
-                onPressed: pickImage,
-                child: Text(S.of(context).pickImage),
-              ),
-
-              SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl: '${TacheService.baseUrl}/fichier/${tache.idPhoto}',
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${S.of(context).name} ${tache.nom}',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(height: 16),
+                Text(
+                    ' ${S.of(context).dateDechange} ${tache.dateLimite ?? "Non renseignée"}'),
+                SizedBox(height: 16),
+                Text('${S.of(context).pourcentageAvancement} ${avancement.toStringAsFixed(
+                    0)}%'),
+                Slider(
+                  value: avancement,
+                  min: 0,
+                  max: 100,
+                  divisions: 100,
+                  label: '${avancement.toStringAsFixed(0)}%',
+                  onChanged: (value) {
+                    setState(() {
+                      avancement = value;
+                      tache.pourcentageAvancement = value.toInt();
+                    });
+                  },
                 ),
-              ),
-              SizedBox(height: 16),
+                SizedBox(height: 16),
+                Text('${S.of(context).pourcentageTempsEcoule} ${tache.pourcentageTemps ??
+                    0}%'),
+                SizedBox(height: 16),
 
-              ElevatedButton(
-                onPressed: () async {
-                  await TacheService.UpdateProgress(tache.id, avancement.toInt());
-                  await UploadImage();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(S.of(context).modification)),
-                  );
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Accueil()));
-                },
-                child: Text(S.of(context).enregistrer),
-              ),
-            ],
+                ElevatedButton(
+                  onPressed: pickImage,
+                  child: Text(S.of(context).pickImage),
+                ),
+
+                SizedBox(
+                  height: 250,
+                  width: double.infinity,
+                  child: CachedNetworkImage(
+                    imageUrl: '${TacheService.baseUrl}/fichier/${tache.idPhoto}',
+                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                ),
+                SizedBox(height: 16),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    await TacheService.UpdateProgress(tache.id, avancement.toInt());
+                    await UploadImage();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(S.of(context).modification)),
+                    );
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Accueil()));
+                  },
+                  child: Text(S.of(context).enregistrer),
+                ),
+              ],
+            ),
+
           ),
-
         )
     );
   }

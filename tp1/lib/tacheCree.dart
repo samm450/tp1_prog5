@@ -32,7 +32,6 @@ class _TacheCreeState extends State<TacheCree> {
 
   Future<void> _ajouterTache() async {
     final nomTache = nomController.text;
-    String nomUtilisateur = SessionManager.nomUtilisateur!;
 
     if(!nomTache.isEmpty && dateEcheance != null){
       await TacheService.AjoutTache(nomTache, dateEcheance!);

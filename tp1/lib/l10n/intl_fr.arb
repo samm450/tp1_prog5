@@ -8,7 +8,7 @@
   "username" : "Nom d'utilisateur",
   "password" : "Mot de passe",
   "passwordConfirmation" : "Confirme le mot de passe",
-  "connexion" : "connexion",
+  "connexion" : "Connexion",
   "inscription" : "Inscription",
 
   "consultation" : "Consultation",
@@ -23,6 +23,7 @@
   "ajoutTache" : "Ajouter une tache",
   "deconnexion" : "Deconnexion",
 
+  "creeTache" : "Créé une tache",
   "creeTache" : "Créé une tache",
   "nomTache" : "Nom de la tache",
   "noDate" : "Tu as besoin de sélectionner une date",

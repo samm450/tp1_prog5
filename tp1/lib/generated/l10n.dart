@@ -64,139 +64,139 @@ class S {
     return Intl.message('Home', name: 'acceuil', desc: '', args: []);
   }
 
-  /// `percentage of used time`
+  /// `Percentage of used time`
   String get tempsEcouler {
     return Intl.message(
-      'percentage of used time',
+      'Percentage of used time',
       name: 'tempsEcouler',
       desc: '',
       args: [],
     );
   }
 
-  /// `percentage of the task`
+  /// `Percentage of the task`
   String get pourcentage {
     return Intl.message(
-      'percentage of the task',
+      'Percentage of the task',
       name: 'pourcentage',
       desc: '',
       args: [],
     );
   }
 
-  /// `percentage of advancement`
+  /// `Percentage of advancement`
   String get pourcetangeAvancement {
     return Intl.message(
-      'percentage of advancement',
+      'Percentage of advancement',
       name: 'pourcetangeAvancement',
       desc: '',
       args: [],
     );
   }
 
-  /// `username`
+  /// `Username`
   String get username {
-    return Intl.message('username', name: 'username', desc: '', args: []);
+    return Intl.message('Username', name: 'username', desc: '', args: []);
   }
 
-  /// `password`
+  /// `Password`
   String get password {
-    return Intl.message('password', name: 'password', desc: '', args: []);
+    return Intl.message('Password', name: 'password', desc: '', args: []);
   }
 
-  /// `password confirm`
+  /// `Password confirm`
   String get passwordConfirmation {
     return Intl.message(
-      'password confirm',
+      'Password confirm',
       name: 'passwordConfirmation',
       desc: '',
       args: [],
     );
   }
 
-  /// `connexion`
+  /// `Connexion`
   String get connexion {
-    return Intl.message('connexion', name: 'connexion', desc: '', args: []);
+    return Intl.message('Connexion', name: 'connexion', desc: '', args: []);
   }
 
-  /// `sign up`
+  /// `Sign up`
   String get inscription {
-    return Intl.message('sign up', name: 'inscription', desc: '', args: []);
+    return Intl.message('Sign up', name: 'inscription', desc: '', args: []);
   }
 
-  /// `consultation`
+  /// `Consultation`
   String get consultation {
     return Intl.message(
-      'consultation',
+      'Consultation',
       name: 'consultation',
       desc: '',
       args: [],
     );
   }
 
-  /// `limited date :`
+  /// `Limited date :`
   String get dateDechange {
     return Intl.message(
-      'limited date :',
+      'Limited date :',
       name: 'dateDechange',
       desc: '',
       args: [],
     );
   }
 
-  /// `name :`
+  /// `Name :`
   String get name {
-    return Intl.message('name :', name: 'name', desc: '', args: []);
+    return Intl.message('Name :', name: 'name', desc: '', args: []);
   }
 
-  /// `percentage of advancement :`
+  /// `Percentage of advancement :`
   String get pourcentageAvancement {
     return Intl.message(
-      'percentage of advancement :',
+      'Percentage of advancement :',
       name: 'pourcentageAvancement',
       desc: '',
       args: [],
     );
   }
 
-  /// `percentage of used time :`
+  /// `Percentage of used time :`
   String get pourcentageTempsEcoule {
     return Intl.message(
-      'percentage of used time :',
+      'Percentage of used time :',
       name: 'pourcentageTempsEcoule',
       desc: '',
       args: [],
     );
   }
 
-  /// `pick an image`
+  /// `Pick an image`
   String get pickImage {
-    return Intl.message('pick an image', name: 'pickImage', desc: '', args: []);
+    return Intl.message('Pick an image', name: 'pickImage', desc: '', args: []);
   }
 
-  /// `modifications has been saved`
+  /// `Modifications has been saved`
   String get modification {
     return Intl.message(
-      'modifications has been saved',
+      'Modifications has been saved',
       name: 'modification',
       desc: '',
       args: [],
     );
   }
 
-  /// `save`
+  /// `Save`
   String get enregistrer {
-    return Intl.message('save', name: 'enregistrer', desc: '', args: []);
+    return Intl.message('Save', name: 'enregistrer', desc: '', args: []);
   }
 
-  /// `add a task`
+  /// `Add a task`
   String get ajoutTache {
-    return Intl.message('add a task', name: 'ajoutTache', desc: '', args: []);
+    return Intl.message('Add a task', name: 'ajoutTache', desc: '', args: []);
   }
 
-  /// `log out`
+  /// `Log out`
   String get deconnexion {
-    return Intl.message('log out', name: 'deconnexion', desc: '', args: []);
+    return Intl.message('Log out', name: 'deconnexion', desc: '', args: []);
   }
 
   /// `Create a task`
@@ -239,9 +239,9 @@ class S {
     );
   }
 
-  /// `add`
+  /// `Add`
   String get add {
-    return Intl.message('add', name: 'add', desc: '', args: []);
+    return Intl.message('Add', name: 'add', desc: '', args: []);
   }
 
   /// `The username is too short`
