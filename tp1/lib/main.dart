@@ -19,14 +19,17 @@ class MyApp extends StatelessWidget {
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
-      home: Connexion(title: S.of(context).connexion),
-      localizationsDelegates: [
+      localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
+      // Builder garantit que le contexte passé à S.of(context) a accès aux delegates
+      home: Builder(
+        builder: (context) => Connexion(title: S.of(context).connexion),
+      ),
     );
   }
 }
