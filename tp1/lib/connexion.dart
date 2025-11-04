@@ -25,9 +25,30 @@ class _ConnexionState extends State<Connexion> {
 
   getUtilisateur() async {
 
-    response = await UserService.connexion(nomControlleur.text, passwordControlleur.text);
-    setState(() {});
+    try {
+      response = await UserService.connexion(
+          nomControlleur.text, passwordControlleur.text);
+      setState(() {});
+    }
+    finally{
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
+
+  onPressed() async {
+    //apres avoir clicker sur le bouton, on desactive le bouton et on affiche un cercle de chargement
+
+    setState(() {
+      isLoading = true;
+    });
+    await getUtilisateur();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
+
+  }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,73 +60,75 @@ class _ConnexionState extends State<Connexion> {
 
         title: Text(widget.title),
       ),
-      body: Center(
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 300, // largeur souhaitée
-                child: TextField(
-                  controller: nomControlleur,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: S.of(context).username,
+      body: Column(
+        children : [
+          SizedBox(
+              height: 5,
+              child: isLoading ? LinearProgressIndicator() : null
+          ),
+          Expanded(
+            child: Center(
+                  child:Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                  SizedBox(
+                    width: 300, // largeur souhaitée
+                    child: TextField(
+                      controller: nomControlleur,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: S.of(context).username,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(height: 16),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: passwordControlleur,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: S.of(context).password,
+                  SizedBox(height: 16),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: passwordControlleur,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: S.of(context).password,
+                      ),
+                      obscureText: true,
+                    ),
                   ),
-                  obscureText: true,
-                ),
-              ),
-              SizedBox(height: 16),
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.red, // couleur de fond
-                  foregroundColor: Colors.white, // couleur du texte
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  SizedBox(height: 16),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red, // couleur de fond
+                      foregroundColor: Colors.white, // couleur du texte
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed : isLoading ? null : onPressed,
+                    child: Text(S.of(context).connexion),
                   ),
-                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onPressed: () async {
-                  await getUtilisateur();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
-                },
-                child: Text(S.of(context).connexion),
-              ),
-              SizedBox(height: 16),
+                  SizedBox(height: 16),
 
 
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.red, // couleur de fond
-                  foregroundColor: Colors.white, // couleur du texte
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onPressed : () async {
-                  //await getUtilisateur();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: S.of(context).inscription)));
-                },
-                child: Text(S.of(context).inscription),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red, // couleur de fond
+                      foregroundColor: Colors.white, // couleur du texte
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed : isLoading ? null : onPressed,
+                    child: Text(S.of(context).inscription),
+                  )
+                ],
+
               )
-            ],
-
+            )
           )
-
-
+        ],
       ),
 
     );

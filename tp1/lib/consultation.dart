@@ -27,8 +27,8 @@ class _consultationState extends State<consultation> {
     super.initState();
     getDetails();
   }
-  
-   void pickImage() async {
+
+  void pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -44,13 +44,24 @@ class _consultationState extends State<consultation> {
       await TacheService.AjouterImageBD(_image!, id);
     }
   }
-  
+
   getDetails() async {
-    int id = widget.id;
-    tache = await TacheService.TacheDetail(id);
-    avancement = tache.pourcentageAvancement.toDouble();
-    setState(() {});
+    setState(() => isLoading = true);
+    try {
+      int id = widget.id;
+      tache = await TacheService.TacheDetail(id);
+      avancement = tache.pourcentageAvancement.toDouble();
+      setState(() {});
+    }
+    finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
+
+  bool isLoading = false;
+
 
   @override
   Widget build(BuildContext context) {

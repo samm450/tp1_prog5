@@ -23,12 +23,15 @@ class _InscriptionState extends State<Inscription> {
   final TextEditingController confirmpasswordControlleur = TextEditingController();
   ReponseConnexion response = ReponseConnexion();
 
+  bool isLoading = false;
+
   getUtilisateur() async {
     try {
       response = await UserService.inscription(
           nomControlleur.text, passwordControlleur.text,
           confirmpasswordControlleur.text);
-      setState(() {});
+      setState(() {
+      });
     } on DioException catch (e) {
       String erreur = e.response!.data;
       if (erreur == "NomTropCourt")
@@ -42,6 +45,22 @@ class _InscriptionState extends State<Inscription> {
       else
       print( S.of(context).InvalidCredentials);
     }
+    finally{
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  onPressed() async {
+    //apres avoir clicker sur le bouton, on desactive le bouton et on affiche un cercle de chargement
+
+    setState(() {
+      isLoading = true;
+    });
+    await getUtilisateur();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
+
   }
 
 
@@ -55,66 +74,74 @@ class _InscriptionState extends State<Inscription> {
 
         title: Text(widget.title),
       ),
-      body: Center(
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 300, // largeur souhaitée
-                child: TextField(
-                  controller: nomControlleur,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: S.of(context).username,
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: passwordControlleur,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: S.of(context).password,
-                  ),
-                  obscureText: true,
-                ),
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: confirmpasswordControlleur,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: S.of(context).passwordConfirmation,
-                  ),
-                  obscureText: true,
-                ),
-              ),
-              SizedBox(height: 16),
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.red, // couleur de fond
-                  foregroundColor: Colors.white, // couleur du texte
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onPressed: () async {
-                  await getUtilisateur();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
+      body: Column(
+        children: [
+          SizedBox(
+            height: 5,
+            child: isLoading ? LinearProgressIndicator() : null
+          ),
+          Expanded(
+            child: Center(
+                child:Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 300, // largeur souhaitée
+                      child: TextField(
+                        controller: nomControlleur,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: S.of(context).username,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: passwordControlleur,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: S.of(context).password,
+                        ),
+                        obscureText: true,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: confirmpasswordControlleur,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: S.of(context).passwordConfirmation,
+                        ),
+                        obscureText: true,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.red, // couleur de fond
+                        foregroundColor: Colors.white, // couleur du texte
+                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: isLoading ? null: onPressed,
+                      child: Text( S.of(context).inscription),
+                    ),
 
-                },
-                child: Text( S.of(context).inscription),
-              )
-            ],
+                    //if (isLoading) const CircularProgressIndicator(),
+                  ],
 
-          )
+                )
 
 
+            ),
+          ),
+        ],
       ),
 
     );
