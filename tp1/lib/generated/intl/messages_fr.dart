@@ -22,11 +22,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "Existant": MessageLookupByLibrary.simpleMessage("La tache existe déjà"),
     "InvalidCredentials": MessageLookupByLibrary.simpleMessage(
-      "Nom d\'utilisateur ou mot de passe invalide",
+      "Les nom d\'utilisateur ou mot de passe sont invalides",
+    ),
+    "MotDePasseTropLong": MessageLookupByLibrary.simpleMessage(
+      "Le mot de passe est trop long",
     ),
     "NameTooShort": MessageLookupByLibrary.simpleMessage(
       "Le nom d\'utilisateur est trop court",
+    ),
+    "NoConnexion": MessageLookupByLibrary.simpleMessage(
+      "Un problème de connexion est survenu",
+    ),
+    "NomTropLong": MessageLookupByLibrary.simpleMessage(
+      "Le nom d\'utilisateur est trop long",
     ),
     "PasswordMismatch": MessageLookupByLibrary.simpleMessage(
       "Les mots de passe ne correspondent pas",
@@ -34,9 +44,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "PasswordTooShort": MessageLookupByLibrary.simpleMessage(
       "Le mot de passe est trop court",
     ),
+    "TropCourt": MessageLookupByLibrary.simpleMessage(
+      "Le nom de la tache est trop court",
+    ),
+    "TropLong": MessageLookupByLibrary.simpleMessage(
+      "Le nom de la tache est trop long",
+    ),
     "UsernameTaken": MessageLookupByLibrary.simpleMessage(
       "Le nom d\'utilisateur est déjà pris",
     ),
+    "Vide": MessageLookupByLibrary.simpleMessage("des champs sont vides"),
     "acceuil": MessageLookupByLibrary.simpleMessage("Acceuil"),
     "add": MessageLookupByLibrary.simpleMessage("Ajouter"),
     "ajoutTache": MessageLookupByLibrary.simpleMessage("Ajouter une tache"),

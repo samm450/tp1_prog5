@@ -34,7 +34,14 @@ class _InscriptionState extends State<Inscription> {
       });
     } on DioException catch (e) {
       String erreur = e.response!.data;
-      if (erreur == "NomTropCourt")
+      if (e.response?.statusCode == 400) {
+        print(S.of(context).NoConnexion);
+
+        setState(() {
+          isLoading = false;
+        });
+      }
+      else if (erreur == "NomTropCourt")
         print( S.of(context).NameTooShort);
       else if (erreur == "MotDePasseTropCourt")
         print( S.of(context).PasswordTooShort);

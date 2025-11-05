@@ -35,6 +35,15 @@
   "PasswordTooShort": "The password is too short",
   "PasswordMismatch": "The passwords do not match",
   "InvalidCredentials": "Invalid username or password",
-  "UsernameTaken": "The username is already taken"
+  "MauvaisNomOuMotDePasse": "The password or username is incorrect",
+  "MotDePasseTropLong": "The password is too long",
+  "NomTropLong": "The username is too long",
+  "NomTropCourt": "The username is too short",
+  "UsernameTaken": "The username is already taken",
 
+  "Existant": "The task already exists",
+  "TropCourt": "The name of the task is too short",
+  "TropLong": "The name of the task is too long",
+  "Vide": "Some fields are empty",
+  "NoConnexion" : "There is no internet connection"
 }

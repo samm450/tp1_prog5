@@ -284,11 +284,101 @@ class S {
     );
   }
 
+  /// `The password or username is incorrect`
+  String get MauvaisNomOuMotDePasse {
+    return Intl.message(
+      'The password or username is incorrect',
+      name: 'MauvaisNomOuMotDePasse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The password is too long`
+  String get MotDePasseTropLong {
+    return Intl.message(
+      'The password is too long',
+      name: 'MotDePasseTropLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The username is too long`
+  String get NomTropLong {
+    return Intl.message(
+      'The username is too long',
+      name: 'NomTropLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The username is too short`
+  String get NomTropCourt {
+    return Intl.message(
+      'The username is too short',
+      name: 'NomTropCourt',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `The username is already taken`
   String get UsernameTaken {
     return Intl.message(
       'The username is already taken',
       name: 'UsernameTaken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The task already exists`
+  String get Existant {
+    return Intl.message(
+      'The task already exists',
+      name: 'Existant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The name of the task is too short`
+  String get TropCourt {
+    return Intl.message(
+      'The name of the task is too short',
+      name: 'TropCourt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The name of the task is too long`
+  String get TropLong {
+    return Intl.message(
+      'The name of the task is too long',
+      name: 'TropLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Some fields are empty`
+  String get Vide {
+    return Intl.message(
+      'Some fields are empty',
+      name: 'Vide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no internet connection`
+  String get NoConnexion {
+    return Intl.message(
+      'There is no internet connection',
+      name: 'NoConnexion',
       desc: '',
       args: [],
     );

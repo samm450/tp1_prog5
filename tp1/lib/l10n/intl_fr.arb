@@ -35,7 +35,14 @@
   "NameTooShort": "Le nom d'utilisateur est trop court",
   "PasswordTooShort": "Le mot de passe est trop court",
   "PasswordMismatch": "Les mots de passe ne correspondent pas",
-  "InvalidCredentials": "Nom d'utilisateur ou mot de passe invalide",
-  "UsernameTaken": "Le nom d'utilisateur est déjà pris"
+  "InvalidCredentials": "Les nom d'utilisateur ou mot de passe sont invalides",
+  "MotDePasseTropLong": "Le mot de passe est trop long",
+  "NomTropLong": "Le nom d'utilisateur est trop long",
+  "UsernameTaken": "Le nom d'utilisateur est déjà pris",
 
+  "Existant": "La tache existe déjà",
+  "TropCourt": "Le nom de la tache est trop court",
+  "TropLong": "Le nom de la tache est trop long",
+  "Vide": "des champs sont vides",
+  "NoConnexion" : "Un problème de connexion est survenu"
 }

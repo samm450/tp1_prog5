@@ -17,15 +17,16 @@ class consultation extends StatefulWidget {
 }
 
 class _consultationState extends State<consultation> {
-
   File? _image;
   Tache tache = Tache();
   double avancement = 0;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     getDetails();
+    isLoading = true;
   }
 
   void pickImage() async {
@@ -45,6 +46,21 @@ class _consultationState extends State<consultation> {
     }
   }
 
+  onPressedButton() async{
+    setState(() => isLoading = true);
+    try {
+      await TacheService.UpdateProgress(tache.id, avancement.toInt());
+      await UploadImage();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).modification)),
+      );
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Accueil()));
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
   getDetails() async {
     setState(() => isLoading = true);
     try {
@@ -60,15 +76,20 @@ class _consultationState extends State<consultation> {
     }
   }
 
-  bool isLoading = false;
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(S.of(context).consultation)),
+        appBar: AppBar(
+          title: Text(S.of(context).consultation),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(3),
+            child: SizedBox(
+              height: 3,
+              child: isLoading ? const LinearProgressIndicator() : const SizedBox.shrink(),
+            ),
+          ),
+        ),
         drawer: const MonDrawer(),
-        // lib/consultation.dart
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -102,7 +123,7 @@ class _consultationState extends State<consultation> {
                 SizedBox(height: 16),
 
                 ElevatedButton(
-                  onPressed: pickImage,
+                  onPressed: isLoading ? null : pickImage,
                   child: Text(S.of(context).pickImage),
                 ),
 
@@ -118,20 +139,11 @@ class _consultationState extends State<consultation> {
                 SizedBox(height: 16),
 
                 ElevatedButton(
-                  onPressed: () async {
-                    await TacheService.UpdateProgress(tache.id, avancement.toInt());
-                    await UploadImage();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(S.of(context).modification)),
-                    );
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Accueil()));
-                  },
+                    onPressed : isLoading ? null : onPressedButton,
                   child: Text(S.of(context).enregistrer),
                 ),
               ],
             ),
-
           ),
         )
     );

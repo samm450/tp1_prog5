@@ -22,11 +22,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "Existant": MessageLookupByLibrary.simpleMessage("The task already exists"),
     "InvalidCredentials": MessageLookupByLibrary.simpleMessage(
       "Invalid username or password",
     ),
+    "MauvaisNomOuMotDePasse": MessageLookupByLibrary.simpleMessage(
+      "The password or username is incorrect",
+    ),
+    "MotDePasseTropLong": MessageLookupByLibrary.simpleMessage(
+      "The password is too long",
+    ),
     "NameTooShort": MessageLookupByLibrary.simpleMessage(
       "The username is too short",
+    ),
+    "NoConnexion": MessageLookupByLibrary.simpleMessage(
+      "There is no internet connection",
+    ),
+    "NomTropCourt": MessageLookupByLibrary.simpleMessage(
+      "The username is too short",
+    ),
+    "NomTropLong": MessageLookupByLibrary.simpleMessage(
+      "The username is too long",
     ),
     "PasswordMismatch": MessageLookupByLibrary.simpleMessage(
       "The passwords do not match",
@@ -34,9 +50,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "PasswordTooShort": MessageLookupByLibrary.simpleMessage(
       "The password is too short",
     ),
+    "TropCourt": MessageLookupByLibrary.simpleMessage(
+      "The name of the task is too short",
+    ),
+    "TropLong": MessageLookupByLibrary.simpleMessage(
+      "The name of the task is too long",
+    ),
     "UsernameTaken": MessageLookupByLibrary.simpleMessage(
       "The username is already taken",
     ),
+    "Vide": MessageLookupByLibrary.simpleMessage("Some fields are empty"),
     "acceuil": MessageLookupByLibrary.simpleMessage("Home"),
     "add": MessageLookupByLibrary.simpleMessage("Add"),
     "ajoutTache": MessageLookupByLibrary.simpleMessage("Add a task"),

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'Inscription.dart';
 import 'accueil.dart';
@@ -30,6 +31,28 @@ class _ConnexionState extends State<Connexion> {
           nomControlleur.text, passwordControlleur.text);
       setState(() {});
     }
+    on DioException catch (e) {
+      String erreur = e.response!.data;
+      if(e.response?.statusCode == 400){
+        print(S.of(context).NoConnexion);
+
+        setState(() {
+          isLoading = false;
+        });
+      }
+      else if (erreur == "MauvaisNomOuMotDePasse")
+        print( S.of(context).InvalidCredentials);
+      else if (erreur == "MotDePasseTropCourt")
+        print( S.of(context).PasswordTooShort);
+      else if (erreur == "MotDePasseTropLong")
+        print( S.of(context).MotDePasseTropLong);
+      else if (erreur == "NomTropLong")
+        print( S.of(context).NomTropLong);
+      else if (erreur == "NomTropCourt")
+        print(S.of(context).NameTooShort);
+      else
+        print( S.of(context).InvalidCredentials);
+    }
     finally{
       setState(() {
         isLoading = false;
@@ -45,6 +68,15 @@ class _ConnexionState extends State<Connexion> {
     });
     await getUtilisateur();
     Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
+
+  }
+  onPressed1() async {
+    //apres avoir clicker sur le bouton, on desactive le bouton et on affiche un cercle de chargement
+
+    setState(() {
+      isLoading = true;
+    });
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Inscription(title: "inscription",)));
 
   }
 
@@ -120,7 +152,7 @@ class _ConnexionState extends State<Connexion> {
                       ),
                       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    onPressed : isLoading ? null : onPressed,
+                    onPressed : isLoading ? null : onPressed1,
                     child: Text(S.of(context).inscription),
                   )
                 ],

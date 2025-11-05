@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'generated/l10n.dart';
 import 'models/SessionManager.dart';
@@ -33,9 +34,21 @@ class _TacheCreeState extends State<TacheCree> {
   Future<void> _ajouterTache() async {
     final nomTache = nomController.text;
 
-    if(!nomTache.isEmpty && dateEcheance != null){
-      await TacheService.AjoutTache(nomTache, dateEcheance!);
+    try {
+        await TacheService.AjoutTache(nomTache, dateEcheance!);
     }
+    on DioException catch(e){
+      String erreur = e.response!.data;
+      if (erreur == "Existant")
+        print( S.of(context).Existant);
+      else if (erreur == "TropCourt")
+        print( S.of(context).TropCourt);
+      else if (erreur == "TropLong")
+        print( S.of(context).TropLong);
+      else if (erreur == "Vide")
+        print( S.of(context).Vide);
+    }
+
   }
 
   @override
