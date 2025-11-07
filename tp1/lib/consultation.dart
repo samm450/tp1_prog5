@@ -16,7 +16,7 @@ class consultation extends StatefulWidget {
   State<consultation> createState() => _consultationState();
 }
 
-class _consultationState extends State<consultation> {
+class _consultationState extends State<consultation> with WidgetsBindingObserver {
   File? _image;
   Tache tache = Tache();
   double avancement = 0;
@@ -25,10 +25,37 @@ class _consultationState extends State<consultation> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     getDetails();
     isLoading = true;
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    // annuler timers / controllers existants si besoin
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+        _refreshDataOnResume();
+    }
+  }
+
+  Future<void> _refreshDataOnResume() async {
+    if (!mounted) return;
+    try {
+      setState(() => isLoading = true);
+      await getDetails(); // remplacer par votre méthode de chargement existante
+    } catch (e) {
+      // gérer l'erreur (optionnel : afficher SnackBar)
+    } finally {
+      if (mounted) setState(() => isLoading = false);
+    }
+  }
   void pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
