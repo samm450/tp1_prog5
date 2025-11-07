@@ -4,25 +4,44 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/l10n.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'service_notification.dart';
 
-void main() async {
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await ServiceNotification.afficherNotification(message);
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await ServiceNotification.initialiser();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  final messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
   );
-  runApp(MyApp());
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    await ServiceNotification.afficherNotification(message);
+  });
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'login',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
       localizationsDelegates: const [
@@ -32,7 +51,6 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      // Builder garantit que le contexte passé à S.of(context) a accès aux delegates
       home: Builder(
         builder: (context) => Connexion(title: S.of(context).connexion),
       ),

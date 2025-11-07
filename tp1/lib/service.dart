@@ -4,11 +4,10 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'models/SessionManager.dart';
-
 import 'models/utilisateur.dart';
-
 import 'models/tache.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SingletonDio {
   static var cookieManager = CookieManager(CookieJar());
@@ -113,5 +112,38 @@ class TacheService {
     compteur++;
   }
 }
+class ServiceApi {
+  static const String baseUrl = 'http://10.0.2.2:8080'; // à remplacer
+
+  static Future<bool> enregistrerJeton() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    if (token == null) return false;
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/enregistrer-jeton-notification'),
+        headers: {'Content-Type': 'application/json'},
+        body: '{"token": "$token"}',
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Erreur enregistrement jeton: $e');
+      return false;
+    }
+  }
+
+  static Future<bool> testNotification() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/test/notifications'),
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Erreur test notification: $e');
+      return false;
+    }
+  }
+}
+
 
 

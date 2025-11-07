@@ -45,6 +45,7 @@ dependencies:
   cached_network_image: ^3.4.1
   firebase_core: ^4.2.1
   firebase_messaging: ^16.0.4
+  flutter_local_notifications: ^17.0.0
 
 
 dev_dependencies:
