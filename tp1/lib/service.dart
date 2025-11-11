@@ -15,6 +15,9 @@ class SingletonDio {
   static Dio getDio() {
     Dio dio = Dio();
     dio.interceptors.add(cookieManager);
+    dio.options.connectTimeout = Duration(seconds: 5);
+    dio.options.receiveTimeout = Duration(seconds: 5);
+    dio.options.sendTimeout = Duration(seconds: 5);
 
     return dio;
   }
@@ -46,7 +49,7 @@ class UserService {
 class TacheService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 
-  static Future<List<Tache>> getTaches2() async {
+  static Future<List<Tache>> getTaches() async {
     final response = await SingletonDio.getDio().get('$baseUrl/api/accueil/photo');
     List tachesjson = response.data;
 
@@ -78,23 +81,6 @@ class TacheService {
 
     //return Tache.fromJson(response.data);
   }
-
-  static Future<void> AjouterImageBD(File imagePath, int tacheId) async {
-    String Nom = 'image';
-    int compteur = 0;
-    String NomImage = Nom + compteur.toString();
-    FormData formData = FormData.fromMap({
-      // TODO on peut ajouter d'autres champs que le fichier d'ou le nom multipart
-      "taskID": tacheId.toString(),
-      // TODO on peut mettre le nom du fichier d'origine si necessaire
-      "file": await MultipartFile.fromFile(
-          imagePath.path, filename: "$NomImage.jpg")
-    });
-
-    await SingletonDio.getDio().post('$baseUrl/fichier', data: formData);
-    compteur++;
-  }
-
 }
   class PhotoService {
   static const String baseUrl = 'http://10.0.2.2:8080';
@@ -110,38 +96,6 @@ class TacheService {
 
     await SingletonDio.getDio().post('$baseUrl/fichier', data: formData);
     compteur++;
-  }
-}
-class ServiceApi {
-  static const String baseUrl = 'http://10.0.2.2:8080'; // à remplacer
-
-  static Future<bool> enregistrerJeton() async {
-    final token = await FirebaseMessaging.instance.getToken();
-    if (token == null) return false;
-
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/enregistrer-jeton-notification'),
-        headers: {'Content-Type': 'application/json'},
-        body: '{"token": "$token"}',
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      print('Erreur enregistrement jeton: $e');
-      return false;
-    }
-  }
-
-  static Future<bool> testNotification() async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/test/notifications'),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      print('Erreur test notification: $e');
-      return false;
-    }
   }
 }
 

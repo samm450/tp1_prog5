@@ -5,18 +5,16 @@ import 'generated/l10n.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'service_notification.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await ServiceNotification.afficherNotification(message);
+  print('Message en background: ${message.messageId} ${message.data}');
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await ServiceNotification.initialiser();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -26,10 +24,6 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    await ServiceNotification.afficherNotification(message);
-  });
 
   runApp(const MyApp());
 }

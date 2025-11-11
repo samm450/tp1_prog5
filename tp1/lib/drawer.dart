@@ -62,36 +62,6 @@ class MonDrawer extends StatelessWidget {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Connexion(title: S.of(context).connexion)));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.notifications_active),
-            title: Text('Recevoir des notifications'),
-            onTap: () async {
-              Navigator.pop(context);
-              final success = await ServiceApi.enregistrerJeton();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(success
-                      ? 'Abonnement aux notifications réussi'
-                      : 'Erreur lors de l\'abonnement'),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.notification_important),
-            title: Text('Test notification'),
-            onTap: () async {
-              Navigator.pop(context);
-              final success = await ServiceApi.testNotification();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(success
-                      ? 'Notification de test envoyée'
-                      : 'Erreur lors du test'),
-                ),
-              );
-            },
-          ),
         ],
       ),
     );

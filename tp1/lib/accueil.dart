@@ -24,9 +24,6 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   File image = File('');
   bool isLoading = false;
 
-  Timer? _timeoutTimer;
-  bool _timedOut = false;
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +33,6 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _timeoutTimer?.cancel();
     super.dispose();
   }
   @override
@@ -68,41 +64,16 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
 
   Future<void> getTaches() async {
     setState(() => isLoading = true);
-
-    // (Re)initialiser le timeout
-    _timedOut = false;
-    _timeoutTimer?.cancel();
-    _timeoutTimer = Timer(const Duration(seconds: 5), () {
-      if (!mounted) return;
-      _timedOut = true;
-      _showSnackBar(context, S.of(context).NoConnexion);
-      setState(() => isLoading = false);
-    });
-
     try {
-      final resultat = await TacheService.getTaches2();
-
-      // Si le timeout s'est produit pendant l'attente, ignorer la suite
-      if (_timedOut) {
-        _timeoutTimer?.cancel();
-        return;
-      }
-
-      _timeoutTimer?.cancel();
+      final resultat = await TacheService.getTaches();
       setState(() {
         taches = resultat;
       });
     } on DioException catch (e) {
-      _timeoutTimer?.cancel();
-      if (_timedOut) return;
-      else {
-        // Utiliser e.message si disponible, sinon message générique
-        final errMsg = e.message ?? S.of(context).NoConnexion;
-        _showSnackBar(context, errMsg);
-      }
+      final errMsg = e.message ?? S.of(context).NoConnexion;
+      _showSnackBar(context, errMsg);
     } finally {
-      _timeoutTimer?.cancel();
-      if (mounted && !_timedOut) {
+      if (mounted) {
         setState(() {
           isLoading = false;
         });

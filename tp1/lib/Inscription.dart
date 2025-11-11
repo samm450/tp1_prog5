@@ -68,7 +68,7 @@ class _InscriptionState extends State<Inscription> {
         _showSnackBar(context, S.of(context).NameTooShort);
       } else if (erreur == "MotDePasseTropCourt") {
         _showSnackBar(context, S.of(context).PasswordTooShort);
-      } else if (erreur == "MotDePasseNonConfirme") {
+      } else if (erreur == "MotsDePasseDifferents") {
         _showSnackBar(context, S.of(context).PasswordMismatch);
       } else if (erreur == "NomDejaUtilise") {
         _showSnackBar(context, S.of(context).UsernameTaken);
@@ -77,7 +77,7 @@ class _InscriptionState extends State<Inscription> {
       }
       return false;
     } finally {
-      _timeoutTimer?.cancel();
+      //_timeoutTimer?.cancel();
       if (mounted && !_timedOut) {
         setState(() {
           isLoading = false;

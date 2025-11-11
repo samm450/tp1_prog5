@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'generated/l10n.dart';
@@ -41,7 +42,7 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-        _refreshDataOnResume();
+      _refreshDataOnResume();
     }
   }
 
@@ -69,7 +70,7 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   UploadImage() async {
     int id = widget.id;
     if(_image != null) {
-      await TacheService.AjouterImageBD(_image!, id);
+      await PhotoService.AjouterImageBD(_image!, id);
     }
   }
 
@@ -157,22 +158,33 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
                 SizedBox(
                   height: 250,
                   width: double.infinity,
-                  child: CachedNetworkImage(
-                    imageUrl: '${TacheService.baseUrl}/fichier/${tache.idPhoto}',
-                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
+                  child: buildImage(),
                 ),
                 SizedBox(height: 16),
 
                 ElevatedButton(
-                    onPressed : isLoading ? null : onPressedButton,
+                  onPressed : isLoading ? null : onPressedButton,
                   child: Text(S.of(context).enregistrer),
                 ),
               ],
             ),
           ),
         )
+    );
+  }
+
+  Widget buildImage() {
+    if (_image != null) {
+      return Image.file(_image!);
+    }
+    return CachedNetworkImage(
+        imageUrl:
+        '${TacheService.baseUrl}/fichier/${tache.idPhoto}?largeur=80',
+        placeholder: (context, url) =>
+        const Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) =>
+        const Icon(Icons.error),
+        fit: BoxFit.contain
     );
   }
 }
