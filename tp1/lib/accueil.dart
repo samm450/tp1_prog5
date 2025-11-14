@@ -174,6 +174,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
                                 height: 80,
                               ),
                             ),
+
                           ],
                         )
                       ],

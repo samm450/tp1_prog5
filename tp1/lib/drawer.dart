@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'accueil.dart';
 import 'generated/l10n.dart';
 import 'tacheCree.dart';
@@ -58,8 +60,11 @@ class MonDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: Text(S.of(context).deconnexion),
             onTap: () {
-              UserService.deconnexion();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Connexion(title: S.of(context).connexion)));
+              {
+                 GoogleSignIn().signOut();
+                 FirebaseAuth.instance.signOut();
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Connexion(title: S.of(context).connexion)));
+              }
             },
           ),
         ],
@@ -67,3 +72,4 @@ class MonDrawer extends StatelessWidget {
     );
   }
 }
+

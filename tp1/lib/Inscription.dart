@@ -1,6 +1,7 @@
 // dart
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'generated/l10n.dart';
 import 'models/utilisateur.dart';
@@ -32,58 +33,63 @@ class _InscriptionState extends State<Inscription> {
   }
 
   Future<bool> getUtilisateur() async {
-    _timedOut = false;
-    _timeoutTimer?.cancel();
-    _timeoutTimer = Timer(const Duration(seconds: 5), () {
-      if (!mounted) return;
-      _timedOut = true;
-      _showSnackBar(context, S.of(context).NoConnexion);
-      setState(() {
-        isLoading = false;
-      });
-    });
 
-    try {
-      response = await UserService.inscription(
-        nomControlleur.text,
-        passwordControlleur.text,
-        confirmpasswordControlleur.text,
-      );
-
-      if (_timedOut) {
-        _timeoutTimer?.cancel();
-        return false;
-      }
-
-      _timeoutTimer?.cancel();
-      setState(() {}); // mettre à jour si besoin
-      return true;
-    } on DioException catch (e) {
-      _timeoutTimer?.cancel();
-      if (_timedOut) return false;
-
-      final String erreur = e.response?.data ?? '';
-
-      if (erreur == "NomTropCourt") {
-        _showSnackBar(context, S.of(context).NameTooShort);
-      } else if (erreur == "MotDePasseTropCourt") {
-        _showSnackBar(context, S.of(context).PasswordTooShort);
-      } else if (erreur == "MotsDePasseDifferents") {
-        _showSnackBar(context, S.of(context).PasswordMismatch);
-      } else if (erreur == "NomDejaUtilise") {
-        _showSnackBar(context, S.of(context).UsernameTaken);
-      } else {
-        _showSnackBar(context, S.of(context).InvalidCredentials);
-      }
-      return false;
-    } finally {
-      //_timeoutTimer?.cancel();
-      if (mounted && !_timedOut) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
+    FirebaseAuth.instance.createUserWithEmailAndPassword(email: nomControlleur.text, password: passwordControlleur.text);
+    return true;
+    //
+    //
+    // _timedOut = false;
+    // _timeoutTimer?.cancel();
+    // _timeoutTimer = Timer(const Duration(seconds: 5), () {
+    //   if (!mounted) return;
+    //   _timedOut = true;
+    //   _showSnackBar(context, S.of(context).NoConnexion);
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // });
+    //
+    // try {
+    //   response = await UserService.inscription(
+    //     nomControlleur.text,
+    //     passwordControlleur.text,
+    //     confirmpasswordControlleur.text,
+    //   );
+    //
+    //   if (_timedOut) {
+    //     _timeoutTimer?.cancel();
+    //     return false;
+    //   }
+    //
+    //   _timeoutTimer?.cancel();
+    //   setState(() {}); // mettre à jour si besoin
+    //   return true;
+    // } on DioException catch (e) {
+    //   _timeoutTimer?.cancel();
+    //   if (_timedOut) return false;
+    //
+    //   final String erreur = e.response?.data ?? '';
+    //
+    //   if (erreur == "NomTropCourt") {
+    //     _showSnackBar(context, S.of(context).NameTooShort);
+    //   } else if (erreur == "MotDePasseTropCourt") {
+    //     _showSnackBar(context, S.of(context).PasswordTooShort);
+    //   } else if (erreur == "MotsDePasseDifferents") {
+    //     _showSnackBar(context, S.of(context).PasswordMismatch);
+    //   } else if (erreur == "NomDejaUtilise") {
+    //     _showSnackBar(context, S.of(context).UsernameTaken);
+    //   } else {
+    //     _showSnackBar(context, S.of(context).InvalidCredentials);
+    //   }
+    //   return false;
+    // } finally {
+    //   //_timeoutTimer?.cancel();
+    //   if (mounted && !_timedOut) {
+    //     setState(() {
+    //       isLoading = false;
+    //     });
+    //   }
+    // }
   }
 
   onPressed() async {
