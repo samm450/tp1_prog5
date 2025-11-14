@@ -1,5 +1,6 @@
 // dart
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1/Inscription.dart';
@@ -24,6 +25,26 @@ class _ConnexionState extends State<Connexion> {
   bool isLoading = false;
   Timer? _timeoutTimer;
   bool _timedOut = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _incrementCounter();
+  }
+
+  void _incrementCounter() {
+    final db = FirebaseFirestore.instance;
+    // Create a new user with a first and last name
+    final user = <String, dynamic>{
+      "first": "Ada",
+      "last": "Lovelace",
+      "born": 1815
+    };
+    db.collection("users").add(user).then((DocumentReference doc) =>
+        print('DocumentSnapshot added with ID: ${doc.id}'));
+
+  }
 
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(

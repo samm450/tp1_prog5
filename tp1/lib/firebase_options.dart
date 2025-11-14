@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'kickmybuddy-e584c.firebasestorage.app',
     measurementId: 'G-TTXGXQ8EF5',
   );
+
 }
