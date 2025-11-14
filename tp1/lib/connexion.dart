@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1/Inscription.dart';
 import 'generated/l10n.dart';
@@ -30,20 +31,16 @@ class _ConnexionState extends State<Connexion> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _incrementCounter();
-  }
-
-  void _incrementCounter() {
-    final db = FirebaseFirestore.instance;
-    // Create a new user with a first and last name
-    final user = <String, dynamic>{
-      "first": "Ada",
-      "last": "Lovelace",
-      "born": 1815
-    };
-    db.collection("users").add(user).then((DocumentReference doc) =>
-        print('DocumentSnapshot added with ID: ${doc.id}'));
-
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in! ' + user.email!);
+      }
+    }
+    );
   }
 
   void _showSnackBar(BuildContext context, String message) {
