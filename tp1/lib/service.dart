@@ -1,13 +1,16 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'models/SessionManager.dart';
 import 'models/utilisateur.dart';
 import 'models/tache.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SingletonDio {
   static var cookieManager = CookieManager(CookieJar());
@@ -22,6 +25,30 @@ class SingletonDio {
     return dio;
   }
 }
+class FirebaseService {
+
+  static Future<String?> getUserId() async {
+
+    User? user = FirebaseAuth.instance.currentUser;
+    String? userId = await user?.uid;
+
+    return userId;
+  }
+
+  static Future<List<Tache>> getTachesFromFirebase() async {
+    String? userId = await getUserId();
+    if (userId == null) {
+      return [];
+    }
+    FirebaseFirestore _firebaseStore = FirebaseFirestore.instance;
+
+    var listTaches = await _firebaseStore
+        .collection("users")
+        .doc("vQLwCprfnnPUexW1MDkAjdnHBk22")
+        .collection("tasks").get();
+}
+
+
 class UserService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 

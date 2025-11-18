@@ -2,7 +2,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'consultation.dart';
 import 'generated/l10n.dart';
@@ -23,6 +26,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   List<Tache> taches = [];
   File image = File('');
   bool isLoading = false;
+  final FirebaseFirestore _firebaseStore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -63,7 +67,9 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   }
 
   Future<void> getTaches() async {
-    setState(() => isLoading = true);
+
+
+    /*setState(() => isLoading = true);
     try {
       final resultat = await TacheService.getTaches();
       setState(() {
@@ -78,7 +84,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
           isLoading = false;
         });
       }
-    }
+    }*/
   }
 
   onPressed() async {
