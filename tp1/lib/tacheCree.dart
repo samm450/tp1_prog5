@@ -35,7 +35,8 @@ class _TacheCreeState extends State<TacheCree> {
     final nomTache = nomController.text;
 
     try {
-        await TacheService.AjoutTache(nomTache, dateEcheance!);
+        //await TacheService.AjoutTache(nomTache, dateEcheance!);
+      await FirebaseService.ajouterTacheFirebase(nomTache, dateEcheance!);
     }
     on DioException catch(e){
       String erreur = e.response!.data;

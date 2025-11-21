@@ -68,23 +68,14 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
 
   Future<void> getTaches() async {
 
+     setState(() => isLoading = true);
 
-    /*setState(() => isLoading = true);
-    try {
-      final resultat = await TacheService.getTaches();
+
+      final resultat = await FirebaseService.getTachesFromFirebase();
       setState(() {
         taches = resultat;
+        isLoading = false;
       });
-    } on DioException catch (e) {
-      final errMsg = e.message ?? S.of(context).NoConnexion;
-      _showSnackBar(context, errMsg);
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }*/
   }
 
   onPressed() async {
@@ -122,7 +113,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => consultation(id: tache.id),
+                          builder: (context) => consultation(id: 1), //a changer, hardcoder
                         ),
                       );
                     },
@@ -171,7 +162,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
                               padding: const EdgeInsets.only(left: 12.0),
                               child: CachedNetworkImage(
                                 imageUrl:
-                                '${TacheService.baseUrl}/fichier/${tache.idPhoto}?largeur=80',
+                                'A changer',
                                 placeholder: (context, url) =>
                                 const Center(child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) =>

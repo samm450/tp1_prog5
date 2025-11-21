@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'models/SessionManager.dart';
-import 'models/utilisateur.dart';
 import 'models/tache.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -27,29 +26,49 @@ class SingletonDio {
 }
 class FirebaseService {
 
-  static Future<String?> getUserId() async {
+  static CollectionReference<Tache> getTaskCollection() {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .doc(getUserId().toString())
+        .collection("tasks")
+        .withConverter(
+          fromFirestore: Tache.fromFirestore,
+          toFirestore: (Tache tache, options) => tache.toFirestore(),
+        );
+  }
 
-    User? user = FirebaseAuth.instance.currentUser;
-    String? userId = await user?.uid;
+    static String getUserId() {
+
+
+    User user = FirebaseAuth.instance.currentUser!;
+    String userId = user.uid;
 
     return userId;
   }
 
-  static Future<List<Tache>> getTachesFromFirebase() async {
-    String? userId = await getUserId();
-    if (userId == null) {
-      return [];
-    }
-    FirebaseFirestore _firebaseStore = FirebaseFirestore.instance;
+    static Future<List<Tache>> getTachesFromFirebase() async {
 
-    var listTaches = await _firebaseStore
-        .collection("users")
-        .doc("vQLwCprfnnPUexW1MDkAjdnHBk22")
-        .collection("tasks").get();
+    var tachesCollection = await getTaskCollection().get();
+
+    List<Tache> resultat = [];
+    for (QueryDocumentSnapshot<Tache> element in tachesCollection.docs) {
+      resultat.add(element.data());
+    }
+
+    return resultat;
+  }
+
+  static Future<void> ajouterTacheFirebase(String nom, DateTime dateLimite) async {
+    Tache nouvelleTache = Tache()
+      ..nom = nom
+      ..dateLimite = dateLimite;
+
+    await getTaskCollection().add(nouvelleTache);
+  }
 }
 
 
-class UserService {
+/*class UserService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 
   static Future<ReponseConnexion> inscription(String nom, String motDePasse, String confirmationMotDePasse) async {
@@ -70,10 +89,10 @@ class UserService {
     await SingletonDio.getDio().post('$baseUrl/id/deconnexion');
     SessionManager.nomUtilisateur = null;
   }
-}
+}*/
 
 
-class TacheService {
+/*class TacheService {
   static const String baseUrl = 'http://10.0.2.2:8080';
 
   static Future<List<Tache>> getTaches() async {
@@ -124,7 +143,7 @@ class TacheService {
     await SingletonDio.getDio().post('$baseUrl/fichier', data: formData);
     compteur++;
   }
-}
+}*/
 
 
 

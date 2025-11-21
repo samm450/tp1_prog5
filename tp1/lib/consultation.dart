@@ -70,14 +70,14 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   UploadImage() async {
     int id = widget.id;
     if(_image != null) {
-      await PhotoService.AjouterImageBD(_image!, id);
+      //await PhotoService.AjouterImageBD(_image!, id);
     }
   }
 
   onPressedButton() async{
     setState(() => isLoading = true);
     try {
-      await TacheService.UpdateProgress(tache.id, avancement.toInt());
+      //await TacheService.UpdateProgress(tache.id, avancement.toInt());
       await UploadImage();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(S.of(context).modification)),
@@ -93,7 +93,7 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
     setState(() => isLoading = true);
     try {
       int id = widget.id;
-      tache = await TacheService.TacheDetail(id);
+      //tache = await TacheService.TacheDetail(id);
       avancement = tache.pourcentageAvancement.toDouble();
       setState(() {});
     }
@@ -179,7 +179,7 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
     }
     return CachedNetworkImage(
         imageUrl:
-        '${TacheService.baseUrl}/fichier/${tache.idPhoto}?largeur=80',
+        'A CHANGER',
         placeholder: (context, url) =>
         const Center(child: CircularProgressIndicator()),
         errorWidget: (context, url, error) =>

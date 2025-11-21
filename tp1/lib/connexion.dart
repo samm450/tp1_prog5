@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tp1/Inscription.dart';
 import 'generated/l10n.dart';
-import 'models/utilisateur.dart';
 import 'service.dart';
 import 'accueil.dart';
 
@@ -22,7 +21,6 @@ class Connexion extends StatefulWidget {
 class _ConnexionState extends State<Connexion> {
   final TextEditingController nomControlleur = TextEditingController();
   final TextEditingController passwordControlleur = TextEditingController();
-  ReponseConnexion response = ReponseConnexion();
 
   bool isLoading = false;
   Timer? _timeoutTimer;
@@ -88,65 +86,43 @@ class _ConnexionState extends State<Connexion> {
   }
 
   Future<bool> getUtilisateur() async {
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: nomControlleur.text, password: passwordControlleur.text);
-    return true;
-    // _timedOut = false;
-    // _timeoutTimer?.cancel();
-    // _timeoutTimer = Timer(const Duration(seconds: 5), () {
-    //   if (!mounted) return;
-    //   _timedOut = true;
-    //   _showSnackBar(context, S.of(context).NoConnexion);
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // });
-    //
-    // try {
-    //
-    //   response = await UserService.connexion(
-    //     nomControlleur.text,
-    //     passwordControlleur.text,
-    //   );
-    //
-    //   if (_timedOut) {
-    //     _timeoutTimer?.cancel();
-    //     return false;
-    //   }
-    //
-    //   _timeoutTimer?.cancel();
-    //   setState(() {}); // mettre à jour l'UI si nécessaire
-    //   return true;
-    // } on DioException catch (e) {
-    //   _timeoutTimer?.cancel();
-    //   if (_timedOut) return false;
-    //
-    //   final String erreur = e.response?.data ?? '';
-    //
-    //   if (erreur == "MauvaisNomOuMotDePasse") {
-    //     _showSnackBar(context, S.of(context).InvalidCredentials);
-    //   } else if (erreur == "MotDePasseTropCourt") {
-    //     _showSnackBar(context, S.of(context).PasswordTooShort);
-    //   } else if (erreur == "MotDePasseTropLong") {
-    //     _showSnackBar(context, S.of(context).MotDePasseTropLong);
-    //   } else if (erreur == "NomTropLong") {
-    //     _showSnackBar(context, S.of(context).NomTropLong);
-    //   } else if (erreur == "NomTropCourt") {
-    //     _showSnackBar(context, S.of(context).NameTooShort);
-    //   } else {
-    //     _showSnackBar(context, S.of(context).InvalidCredentials);
-    //   }
-    //   return false;
-    // } finally {
-    //   _timeoutTimer?.cancel();
-    //   if (mounted && !_timedOut) {
-    //     setState(() {
-    //       isLoading = false;
-    //     });
-    //   }
-    // }
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: nomControlleur.text.trim(),
+        password: passwordControlleur.text,
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'user-not-found':
+        case 'wrong-password':
+          message = S.of(context).InvalidCredentials;
+          break;
+        case 'invalid-email':
+          message = S.of(context).InvalidCredentials;
+          break;
+        case 'user-disabled':
+          message = S.of(context).InvalidCredentials;
+          break;
+        default:
+          message = e.message ?? S.of(context).InvalidCredentials;
+      }
+      _showSnackBar(context, message);
+      return false;
+    } catch (e) {
+      _showSnackBar(context, e.toString());
+      return false;
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
-  onPressed() async {
+  onPressedConnexion() async {
     setState(() {
       isLoading = true;
     });
@@ -158,7 +134,7 @@ class _ConnexionState extends State<Connexion> {
     }
   }
 
-  onPressed1() async {
+  onPressedInscription() async {
     setState(() {
       isLoading = true;
     });
@@ -213,7 +189,7 @@ class _ConnexionState extends State<Connexion> {
                       ),
                       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    onPressed: isLoading ? null : onPressed,
+                    onPressed: isLoading ? null : onPressedConnexion,
                     child: Text(S.of(context).connexion),
                   ),
                   SizedBox(height: 16),
@@ -229,7 +205,7 @@ class _ConnexionState extends State<Connexion> {
                       ),
                       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    onPressed: isLoading ? null : onPressed1,
+                    onPressed: isLoading ? null : onPressedInscription,
                     child: Text(S.of(context).inscription),
                   ),
                   SizedBox(height: 16),
@@ -243,7 +219,7 @@ class _ConnexionState extends State<Connexion> {
                       ),
                       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    onPressed: signInWithGoogle,
+                    onPressed: isLoading ? null : signInWithGoogle,
                     child: Text("sign in with google"),
                   ),
                 ],

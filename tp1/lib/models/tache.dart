@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'tache.g.dart';
 
 @JsonSerializable()
 class Tache {
@@ -16,27 +15,49 @@ class Tache {
   int pourcentageAvancement = 0;
   String idPhoto = "";
 
-  factory Tache.fromJson(Map<String, dynamic> json) => _$TacheFromJson(json);
+  Timestamp creationtime = Timestamp.now();
 
-  Map<String, dynamic> toJson() => _$TacheToJson(this);
+  int pourcentageTempsRestant({DateTime? now}) {
+    final DateTime start = creationtime.toDate();
+    final DateTime deadline = dateLimite;
+    final DateTime current = now ?? DateTime.now();
+
+    final double totalHours = deadline.difference(start).inSeconds / 3600.0;
+    final double remainingHours = deadline.difference(current).inSeconds / 3600.0;
+
+    if (totalHours <= 0) return 0;
+    double pct = (remainingHours / totalHours) * 100.0;
+    if (pct.isNaN) pct = 0.0;
+    if (pct < 0.0) pct = 0.0;
+    if (pct > 100.0) pct = 100.0;
+
+    pourcentageTemps = pct.round();
+    return pct.round();
+  }
 
   Map<String, dynamic> toFirestore() {
     return {
+      "dateLimite" : Timestamp.fromDate(dateLimite),
+      "nom" : nom,
+      "photoId" : idPhoto,
+      "pourcentageTemps" : pourcentageTemps,
+      "pourcentageAvancement" : pourcentageAvancement
     };
   }
 
   // La méthode pour récupérer un Pipo depuis le JSON de firestore
   factory Tache.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options,) {
+      SnapshotOptions? options,
+      ) {
     final data = snapshot.data();
     Tache resultat = Tache();
-    resultat.id = snapshot.id;                          // l'id n'est pas dans les données
-    resultat.dateLimite = data?["popi"];
-    resultat.dateLimite = data?[""]// les autres champs sont dans data
-    resultat.pourcentageAvancement = data?["pipi"];                      // les autres champs sont dans data
-    resultat.pourcentageTemps = data?["popo"].toDate();             // Timestamp dans le firestore, convertir
-    resultat.idPhoto = data?["creationtime"];
+    resultat.id = snapshot.id;
+    resultat.nom = data?["nom"];
+    resultat.dateLimite = data?["dateLimite"].toDate();
+    resultat.pourcentageAvancement = data?["pourcentageAvancement"];
+    resultat.pourcentageTemps = data?["pourcentageTemps"];             // Timestamp dans le firestore, convertir
+    resultat.idPhoto = data?["photoId"];
     return resultat;
   }
 }
