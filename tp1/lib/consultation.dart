@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class consultation extends StatefulWidget {
-  final int id;
+  final String id;
   const consultation({super.key, required this.id});
 
   @override
@@ -68,7 +68,7 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   }
 
   UploadImage() async {
-    int id = widget.id;
+    //int id = widget.id;
     if(_image != null) {
       //await PhotoService.AjouterImageBD(_image!, id);
     }
@@ -78,6 +78,7 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
     setState(() => isLoading = true);
     try {
       //await TacheService.UpdateProgress(tache.id, avancement.toInt());
+      await FirebaseService.modifierTacheFirebase(tache.id, avancement.toInt());
       await UploadImage();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(S.of(context).modification)),
@@ -92,8 +93,8 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   getDetails() async {
     setState(() => isLoading = true);
     try {
-      int id = widget.id;
-      //tache = await TacheService.TacheDetail(id);
+      String id = widget.id;
+      tache = await FirebaseService.getTache(id);
       avancement = tache.pourcentageAvancement.toDouble();
       setState(() {});
     }

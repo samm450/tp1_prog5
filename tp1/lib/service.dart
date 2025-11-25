@@ -37,18 +37,21 @@ class FirebaseService {
         );
   }
 
-    static String getUserId() {
-
-
+  static String getUserId() {
     User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
 
     return userId;
   }
+  static Future<Tache> getTache(String id) async {
+    DocumentSnapshot<Tache> tache = await getTaskCollection().doc(id).get();
+
+    return tache.data()!;
+  }
 
     static Future<List<Tache>> getTachesFromFirebase() async {
 
-    var tachesCollection = await getTaskCollection().get();
+    QuerySnapshot<Tache> tachesCollection = await getTaskCollection().get();
 
     List<Tache> resultat = [];
     for (QueryDocumentSnapshot<Tache> element in tachesCollection.docs) {
@@ -64,6 +67,15 @@ class FirebaseService {
       ..dateLimite = dateLimite;
 
     await getTaskCollection().add(nouvelleTache);
+  }
+
+  static Future<void> modifierTacheFirebase(String id, int pourcentage) async{
+
+    Tache tachemodifier = await getTache(id);
+
+    tachemodifier.pourcentageAvancement = pourcentage;
+
+    await getTaskCollection().doc(id).set(tachemodifier);
   }
 }
 
