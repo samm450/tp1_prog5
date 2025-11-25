@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'generated/l10n.dart';
 import 'models/tache.dart';
 import 'service.dart';
@@ -57,20 +58,55 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
       if (mounted) setState(() => isLoading = false);
     }
   }
-  void pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
+  final picker = ImagePicker();
+
+  // on met le fichier dans l'etat pour l'afficher dans la page
+  var _imageFile;
+  var _publicUrl;
+
+  sendPicture(XFile xfile) async {
+
+    final supabase = Supabase.instance.client;
+
+    String bucketid = "Supa-bucket";
+
+    try {
+      await supabase
+          .storage
+          .createBucket(bucketid, BucketOptions(public: true));
+    } on StorageException catch(e) {
+
+      if(e.error == "Duplicate") {
+        // Le bucket existe déjà
+        print(e);
+      }
+
     }
+
+    final String fullPath = await supabase
+        .storage
+        .from(bucketid)
+        .upload(
+        xfile.name,
+        File(xfile.path)
+    );
+
+    _publicUrl = supabase
+        .storage
+        .from(bucketid)
+        .getPublicUrl(xfile.name);
   }
 
-  UploadImage() async {
-    //int id = widget.id;
-    if(_image != null) {
-      //await PhotoService.AjouterImageBD(_image!, id);
+  Future getImage() async {
+    print("ouverture du selecteur d'image");
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      print("l'image a ete choisie ${pickedFile.path}");
+      _imageFile = File(pickedFile.path);
+      setState(() {});
+
+      await sendPicture(pickedFile);
+      setState(() { });
     }
   }
 

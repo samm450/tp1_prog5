@@ -48,6 +48,7 @@ dependencies:
   firebase_messaging: ^16.0.4
   cloud_firestore: ^6.1.0
   firebase_auth: ^6.1.2
+  supabase_flutter: ^2.10.3
 
 
 

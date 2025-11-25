@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'connexion.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/l10n.dart';
@@ -12,11 +13,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Message en background: ${message.messageId} ${message.data}');
 }
 
+const supabaseUrl = 'https://jswrabdlegqarjnwlspc.supabase.co';
+const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
 
   final messaging = FirebaseMessaging.instance;
   await messaging.requestPermission(
