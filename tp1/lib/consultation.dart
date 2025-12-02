@@ -79,6 +79,9 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
         .getPublicUrl(xfile.name);
 
     tache.PhotoURL = _publicUrl;
+
+    setState(() {});
+    
     await FirebaseService.modifierTacheFirebase(tache);
 
   }
