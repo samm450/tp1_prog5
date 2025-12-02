@@ -3,9 +3,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'consultation.dart';
 import 'generated/l10n.dart';
@@ -161,8 +158,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0),
                               child: CachedNetworkImage(
-                                imageUrl:
-                                'A changer',
+                                imageUrl: tache.PhotoURL,
                                 placeholder: (context, url) =>
                                 const Center(child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) =>

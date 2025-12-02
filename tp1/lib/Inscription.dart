@@ -1,10 +1,8 @@
 // dart
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'generated/l10n.dart';
-import 'service.dart';
 import 'accueil.dart';
 
 class Inscription extends StatefulWidget {

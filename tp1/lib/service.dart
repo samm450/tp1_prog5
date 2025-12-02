@@ -4,6 +4,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tp1/main.dart';
@@ -41,7 +42,7 @@ class FirebaseService {
   }
 
   static String getUserId() {
-    User user = FirebaseAuth.instance.currentUser!;
+    fb_auth.User? user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
 
     return userId;
@@ -72,14 +73,55 @@ class FirebaseService {
     await getTaskCollection().add(nouvelleTache);
   }
 
-  static Future<void> modifierTacheFirebase(String id, int pourcentage) async{
+  static Future<void> modifierTacheFirebase(Tache tache) async{
+
+    await getTaskCollection().doc(tache.id).set(tache);
+  }
+
+  /*static Future<void> modifierTacheFirebase(String id, int pourcentage) async{
 
     Tache tachemodifier = await getTache(id);
 
     tachemodifier.pourcentageAvancement = pourcentage;
 
     await getTaskCollection().doc(id).set(tachemodifier);
-  }
+  }*/
+}
+class SupaBaseService {
+
+  var _imageFile;
+  var _publicUrl;
+
+   Future<void> ajouterImage(XFile image, int tacheId) async {
+
+      final supabase = Supabase.instance.client;
+      final String fullPath = await supabase
+          .storage
+          .from('supabucket')
+          .upload( image.name, File(image.path)
+      );
+
+      _publicUrl = supabase
+          .storage
+          .from('supabucket')
+          .getPublicUrl(image.name);
+   }
+
+  // static Future<String> getImage(String fileName) async {
+  //
+  //   final supabase = Supabase.instance.client;
+  //
+  //
+  //   String url = supabase
+  //       .storage
+  //       .from('supabucket')
+  //       .getPublicUrl("nom-du-fichier");
+  //
+  //   return url;
+  // }
+
+
+
 }
 
 

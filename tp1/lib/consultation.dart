@@ -19,10 +19,11 @@ class consultation extends StatefulWidget {
 }
 
 class _consultationState extends State<consultation> with WidgetsBindingObserver {
-  File? _image;
+  File? _imageFile;
   Tache tache = Tache();
   double avancement = 0;
   bool isLoading = false;
+  var _publicUrl;
 
   @override
   void initState() {
@@ -58,66 +59,53 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
       if (mounted) setState(() => isLoading = false);
     }
   }
+
   final picker = ImagePicker();
 
   // on met le fichier dans l'etat pour l'afficher dans la page
-  var _imageFile;
-  var _publicUrl;
+
 
   sendPicture(XFile xfile) async {
-
     final supabase = Supabase.instance.client;
-
-    String bucketid = "Supa-bucket";
-
-    try {
-      await supabase
-          .storage
-          .createBucket(bucketid, BucketOptions(public: true));
-    } on StorageException catch(e) {
-
-      if(e.error == "Duplicate") {
-        // Le bucket existe déjà
-        print(e);
-      }
-
-    }
-
     final String fullPath = await supabase
         .storage
-        .from(bucketid)
-        .upload(
-        xfile.name,
-        File(xfile.path)
+        .from('supabucket')
+        .upload(xfile.name, File(xfile.path), fileOptions: const FileOptions(upsert: true),
     );
 
     _publicUrl = supabase
         .storage
-        .from(bucketid)
+        .from('supabucket')
         .getPublicUrl(xfile.name);
+
+    tache.PhotoURL = _publicUrl;
+    await FirebaseService.modifierTacheFirebase(tache);
+
   }
 
   Future getImage() async {
-    print("ouverture du selecteur d'image");
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       print("l'image a ete choisie ${pickedFile.path}");
       _imageFile = File(pickedFile.path);
-      setState(() {});
 
       await sendPicture(pickedFile);
-      setState(() { });
+      setState(() {});
     }
   }
 
-  onPressedButton() async{
+  onPressedButton() async {
     setState(() => isLoading = true);
     try {
       //await TacheService.UpdateProgress(tache.id, avancement.toInt());
-      await FirebaseService.modifierTacheFirebase(tache.id, avancement.toInt());
-      await UploadImage();
+      tache.pourcentageAvancement = avancement.toInt();
+      await FirebaseService.modifierTacheFirebase(tache);
+      //await FirebaseService.modifierTacheFirebase(tache.id, avancement.toInt());
+      //await UploadImage();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).modification)),
+        SnackBar(content: Text(S
+            .of(context)
+            .modification)),
       );
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => Accueil()));
@@ -132,6 +120,15 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
       String id = widget.id;
       tache = await FirebaseService.getTache(id);
       avancement = tache.pourcentageAvancement.toDouble();
+
+      if (tache.PhotoURL != null) {
+        _publicUrl = tache.PhotoURL;
+        /*final supabase = Supabase.instance.client;
+        _publicUrl = supabase
+            .storage
+            .from('supabucket')
+            .getPublicUrl(tache.PhotoURL!);*/
+      }
       setState(() {});
     }
     finally {
@@ -145,12 +142,16 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(S.of(context).consultation),
+          title: Text(S
+              .of(context)
+              .consultation),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(3),
             child: SizedBox(
               height: 3,
-              child: isLoading ? const LinearProgressIndicator() : const SizedBox.shrink(),
+              child: isLoading
+                  ? const LinearProgressIndicator()
+                  : const SizedBox.shrink(),
             ),
           ),
         ),
@@ -161,13 +162,21 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${S.of(context).name} ${tache.nom}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text('${S
+                    .of(context)
+                    .name} ${tache.nom}',
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
                 SizedBox(height: 16),
                 Text(
-                    ' ${S.of(context).dateDechange} ${tache.dateLimite ?? "Non renseignée"}'),
+                    ' ${S
+                        .of(context)
+                        .dateDechange} ${tache.dateLimite ??
+                        "Non renseignée"}'),
                 SizedBox(height: 16),
-                Text('${S.of(context).pourcentageAvancement} ${avancement.toStringAsFixed(
+                Text('${S
+                    .of(context)
+                    .pourcentageAvancement} ${avancement.toStringAsFixed(
                     0)}%'),
                 Slider(
                   value: avancement,
@@ -183,13 +192,17 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
                   },
                 ),
                 SizedBox(height: 16),
-                Text('${S.of(context).pourcentageTempsEcoule} ${tache.pourcentageTemps ??
+                Text('${S
+                    .of(context)
+                    .pourcentageTempsEcoule} ${tache.pourcentageTemps ??
                     0}%'),
                 SizedBox(height: 16),
 
                 ElevatedButton(
-                  onPressed: isLoading ? null : pickImage,
-                  child: Text(S.of(context).pickImage),
+                  onPressed: isLoading ? null : getImage,
+                  child: Text(S
+                      .of(context)
+                      .pickImage),
                 ),
 
                 SizedBox(
@@ -200,8 +213,10 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
                 SizedBox(height: 16),
 
                 ElevatedButton(
-                  onPressed : isLoading ? null : onPressedButton,
-                  child: Text(S.of(context).enregistrer),
+                  onPressed: isLoading ? null : onPressedButton,
+                  child: Text(S
+                      .of(context)
+                      .enregistrer),
                 ),
               ],
             ),
@@ -211,12 +226,18 @@ class _consultationState extends State<consultation> with WidgetsBindingObserver
   }
 
   Widget buildImage() {
-    if (_image != null) {
-      return Image.file(_image!);
+    if (_imageFile != null) {
+      return Image.file(_imageFile!);
+    }
+    if (_publicUrl == null) {
+      return Container(
+        color: Colors.grey[200],
+        child: const Center(
+            child: Icon(Icons.image, size: 48, color: Colors.grey)),
+      );
     }
     return CachedNetworkImage(
-        imageUrl:
-        'A CHANGER',
+        imageUrl: _publicUrl!,
         placeholder: (context, url) =>
         const Center(child: CircularProgressIndicator()),
         errorWidget: (context, url, error) =>

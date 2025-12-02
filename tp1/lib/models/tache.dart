@@ -13,7 +13,7 @@ class Tache {
   String nom = "";
   int pourcentageTemps = 0;
   int pourcentageAvancement = 0;
-  String idPhoto = "";
+  String PhotoURL = "";
 
   Timestamp creationtime = Timestamp.now();
 
@@ -39,7 +39,7 @@ class Tache {
     return {
       "dateLimite" : Timestamp.fromDate(dateLimite),
       "nom" : nom,
-      "photoId" : idPhoto,
+      "photoId" : PhotoURL,
       "pourcentageTemps" : pourcentageTemps,
       "pourcentageAvancement" : pourcentageAvancement
     };
@@ -57,7 +57,7 @@ class Tache {
     resultat.dateLimite = data?["dateLimite"].toDate();
     resultat.pourcentageAvancement = data?["pourcentageAvancement"];
     resultat.pourcentageTemps = data?["pourcentageTemps"];             // Timestamp dans le firestore, convertir
-    resultat.idPhoto = data?["photoId"];
+    resultat.PhotoURL = data?["photoId"];
     return resultat;
   }
 }

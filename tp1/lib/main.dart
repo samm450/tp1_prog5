@@ -14,7 +14,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 const supabaseUrl = 'https://jswrabdlegqarjnwlspc.supabase.co';
-const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzd3JhYmRsZWdxYXJqbndsc3BjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwNzM1OTQsImV4cCI6MjA3OTY0OTU5NH0.B9Rx8u9vOzJXF1ZB9UYrUAOFCN6g5z5klH6JJq7NjF4';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
