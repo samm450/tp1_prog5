@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'generated/l10n.dart';
 import 'models/SessionManager.dart';
@@ -31,25 +33,57 @@ class _TacheCreeState extends State<TacheCree> {
     }
   }
 
-  Future<void> _ajouterTache() async {
-    final nomTache = nomController.text;
-
+  Future<bool> _ajouterTache() async {
     try {
-        //await TacheService.AjoutTache(nomTache, dateEcheance!);
-      await FirebaseService.ajouterTacheFirebase(nomTache, dateEcheance!);
-    }
-    on DioException catch(e){
-      String erreur = e.response!.data;
-      if (erreur == "Existant")
-        print( S.of(context).Existant);
-      else if (erreur == "TropCourt")
-        print( S.of(context).TropCourt);
-      else if (erreur == "TropLong")
-        print( S.of(context).TropLong);
-      else if (erreur == "Vide")
-        print( S.of(context).Vide);
-    }
+      final nomTrim = nomController.text.trim();
 
+      // Validation 1 : nom non vide
+      if (nomTrim.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Le nom de la tâche ne peut pas être vide.')),
+        );
+        return false;
+      }
+
+      // Validation 2 : date fournie et dans le futur
+      if (dateEcheance == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Veuillez sélectionner une date d\'échéance.')),
+        );
+        return false;
+      }
+      if (!dateEcheance!.isAfter(DateTime.now())) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('La date doit être dans le futur.')),
+        );
+        return false;
+      }
+
+      Future<bool> _tacheExiste(String nom) async {
+        final task = await FirebaseService.getTaskCollection().where('nom', isEqualTo: nom).limit(1).get();
+        return task.docs.isNotEmpty;
+      }
+
+      final exists = await _tacheExiste(nomTrim);
+      if (exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Une tâche avec ce nom existe déjà.')),
+        );
+        return false;
+      }
+
+      // Appel du service seulement si toutes les validations passent
+      await FirebaseService.ajouterTacheFirebase(nomTrim, dateEcheance!);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tâche créée avec succès.')),
+      );
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la création: ${e.toString()}')),
+      );
+      return false;
+    }
   }
 
   @override
@@ -88,8 +122,10 @@ class _TacheCreeState extends State<TacheCree> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () async {
-                await _ajouterTache();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()),);
+                final success = await _ajouterTache();
+                if (success) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Accueil()));
+                }
               },
               child: Text(S.of(context).add),
               style: ElevatedButton.styleFrom(

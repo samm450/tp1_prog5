@@ -41,7 +41,8 @@ class Tache {
       "nom" : nom,
       "photoId" : PhotoURL,
       "pourcentageTemps" : pourcentageTemps,
-      "pourcentageAvancement" : pourcentageAvancement
+      "pourcentageAvancement" : pourcentageAvancement,
+      "dateCreation" : creationtime
     };
   }
 
@@ -55,6 +56,7 @@ class Tache {
     resultat.id = snapshot.id;
     resultat.nom = data?["nom"];
     resultat.dateLimite = data?["dateLimite"].toDate();
+    resultat.creationtime = data?["dateCreation"];
     resultat.pourcentageAvancement = data?["pourcentageAvancement"];
     resultat.pourcentageTemps = data?["pourcentageTemps"];             // Timestamp dans le firestore, convertir
     resultat.PhotoURL = data?["photoId"];

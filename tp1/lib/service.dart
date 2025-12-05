@@ -78,6 +78,9 @@ class FirebaseService {
     await getTaskCollection().doc(tache.id).set(tache);
   }
 
+
+
+
   /*static Future<void> modifierTacheFirebase(String id, int pourcentage) async{
 
     Tache tachemodifier = await getTache(id);

@@ -42,26 +42,6 @@ class _ConnexionState extends State<Connexion> {
     );
   }
 
-  // Future<UserCredential> signInWithGoogle() async {
-  //   // Déclencher le flow d'authentification
-  //   final GoogleSignInAccount googleUser = await GoogleSignIn.instance
-  //       .authenticate();
-  //
-  //   // Obtenir les détails d'authorisation de la requête
-  //   final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-  //   final GoogleSignInClientAuthorization? authorizationClient =
-  //   await googleUser.authorizationClient.authorizationForScopes([]);
-  //
-  //   // Créer de nouvelles informations de connexion
-  //   final credential = GoogleAuthProvider.credential(
-  //     accessToken: authorizationClient!.accessToken,
-  //     idToken: googleAuth.idToken,
-  //   );
-  //
-  //   // Une fois connecté, retourner UserCredential
-  //   return await FirebaseAuth.instance.signInWithCredential(credential);
-  // }
-
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

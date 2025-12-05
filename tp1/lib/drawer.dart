@@ -31,11 +31,11 @@ class MonDrawer extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  SessionManager.nomUtilisateur ?? '',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    FirebaseAuth.instance.currentUser?.email ?? '',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
