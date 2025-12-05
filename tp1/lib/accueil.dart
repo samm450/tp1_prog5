@@ -40,7 +40,7 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-        _refreshDataOnResume();
+      _refreshDataOnResume();
     }
   }
 
@@ -57,6 +57,16 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   }
 
 
+  Future<void> deleteTache(Tache tache) async {
+    await FirebaseService.getTaskCollection().doc(tache.id).delete();
+    if (!mounted) return;
+    setState(() {
+      taches.removeWhere((t) => t.id == tache.id);
+      isLoading = false;
+    });
+    _showSnackBar(context, 'Tâche supprimée');
+  }
+
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
@@ -65,14 +75,14 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
 
   Future<void> getTaches() async {
 
-     setState(() => isLoading = true);
+    setState(() => isLoading = true);
 
 
-      final resultat = await FirebaseService.getTachesFromFirebase();
-      setState(() {
-        taches = resultat;
-        isLoading = false;
-      });
+    final resultat = await FirebaseService.getTachesFromFirebase();
+    setState(() {
+      taches = resultat;
+      isLoading = false;
+    });
   }
 
   onPressed() async {
@@ -171,6 +181,10 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
                           ],
                         )
                       ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: isLoading ? null : () => deleteTache(tache),
                     ),
                   );
                 },
